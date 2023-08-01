@@ -1,4 +1,4 @@
-from cmu_graphics import *
+from Player import *
 
 ''' 
 * Toy Tanks
@@ -9,18 +9,20 @@ from cmu_graphics import *
 '''
 
 def onAppStart(app):
+    app.user = Player()
     pass
 
 def onMousePress(app, mouseX, mouseY):
     pass
 
 def onKeyPress(app, key):
-    pass
+    app.user.keyPress(key)
+
+def onKeyHold(app, keys):
+    app.user.keyHold(keys)    
 
 def redrawAll(app):
-    drawRect(app.width // 2, app.height // 2, 40, 30, align = 'center',
-             fill = 'darkBlue')
-    pass
+    app.user.redraw(app)
 
 def main():
     runApp(width = 800, height = 600)
