@@ -8,7 +8,6 @@ from cmu_graphics import *
 *
 '''
 
-
 def onAppStart(app):
     pass
 
@@ -19,9 +18,11 @@ def onKeyPress(app, key):
     pass
 
 def redrawAll(app):
+    drawRect(app.width // 2, app.height // 2, 40, 30, align = 'center',
+             fill = 'darkBlue')
     pass
 
 def main():
-    runApp()
+    runApp(width = 800, height = 600)
 
 main()
