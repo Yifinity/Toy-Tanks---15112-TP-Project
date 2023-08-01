@@ -9,22 +9,31 @@ from Player import *
 '''
 
 def onAppStart(app):
-    app.user = Player()
+    app.objects = [Player()]
     pass
 
 def onMousePress(app, mouseX, mouseY):
     pass
 
+def onMouseMove(app, mouseX, mouseY):
+    # We just want the player
+    app.objects[0].mouseMove(mouseX, mouseY)
+
+
 def onKeyPress(app, key):
-    app.user.keyPress(key)
+    for object in app.objects:
+        object.keyPress(key)
+
 
 def onKeyHold(app, keys):
-    app.user.keyHold(keys)    
+    for object in app.objects:
+        object.keyHold(keys)
 
 def redrawAll(app):
-    app.user.redraw(app)
+    for object in app.objects:
+        object.redraw(app)
 
 def main():
-    runApp(width = 800, height = 600)
+    runApp(width = 1000, height = 800)
 
 main()
