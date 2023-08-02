@@ -35,6 +35,6 @@ def redrawAll(app):
         object.redraw(app)
 
 def main():
-    runApp(width = 1000, height = 800)
+    runApp(width = 800, height = 600)
 
 main()

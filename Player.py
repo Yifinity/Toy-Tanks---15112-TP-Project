@@ -5,11 +5,13 @@ class Player:
     def __init__(self):
         # Tank:
         self.degrees = 0
-        self.width = 40
-        self.height = 35
-        self.color = 'darkBlue'
+        self.width = 35
+        self.height = 30
+        self.color = rgb(6, 6, 193)
         self.x = app.width / 2
         self.y = app.height / 2
+        self.border = 'darkBlue'
+        self.borderWidth = 3
 
         #Mouse:
         self.mX = 0
@@ -17,9 +19,10 @@ class Player:
 
         # Turret:
         self.turretDegrees = 0
-        self.tubeColor = 'lightBlue'
+        self.tubeColor = rgb(75, 75, 255)
         self.tubeBorder = 'black'
-        self.baseSize = 10
+        self.baseSize = 8
+        self.capRad = 10
 
         # Tube - end of turret
         self.tubeLength = 30
@@ -32,14 +35,15 @@ class Player:
 
     
     def redraw(self, app):
-        drawRect(self.x, self.y, self.width, self.height,
-                fill = self.color, align = 'center', rotateAngle = self.degrees)
+        drawRect(self.x, self.y, self.width, self.height, border = self.border,
+                borderWidth = self.borderWidth, fill = self.color, 
+                align = 'center', rotateAngle = self.degrees)
         
         drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
                  align = 'center', rotateAngle = self.turretDegrees,
                  fill = self.tubeColor, border = self.tubeBorder)
         
-        drawCircle(self.x, self.y, 15, fill = self.tubeColor,
+        drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
         
         drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
