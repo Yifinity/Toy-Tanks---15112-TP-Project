@@ -17,77 +17,51 @@ class Player:
 
         # Turret:
         self.turretDegrees = 0
-        self.turretColor = 'lightBlue'
-        self.tubeColor = 'brown'
+        self.tubeColor = 'lightBlue'
+        self.tubeBorder = 'black'
         self.baseSize = 10
-        self.tubeLength = 20
-        self.tubeX = self.x - self.baseSize / 2
-        self.tubeY = self.y + self.baseSize / 2
 
-        # This is the hypotenuse of a 45-45-90 triangle - the turret
-        self.turretDiag = 5 * math.sqrt(2)
+        # Tube - end of turret
+        self.tubeLength = 30
+        self.tubeX = self.x - self.baseSize / 2
+        self.tubeY = self.y - self.baseSize / 2
+
         self.tubeDegree = 0
 
         # Change in angle
         self.dAngle = 5
 
-        # self.lPointX = 0
-        # self.lPointY = 0
-        
-        self.rPointX = 0
-        self.rPointY = 0
     
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height,
                 fill = self.color, align = 'center', rotateAngle = self.degrees)
         
-        drawRect(self.x, self.y, self.baseSize, self.baseSize, align = 'center',
-                fill = self.turretColor, rotateAngle = self.turretDegrees)
+        # drawRect(self.x, self.y, self.baseSize, self.baseSize, align = 'center',
+        #         fill = self.turretColor, rotateAngle = self.turretDegrees)
     
-        # Draw Angled Rect:
+        drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
+                 align = 'center', rotateAngle = self.turretDegrees,
+                 fill = self.tubeColor, border = self.tubeBorder)
 
-        # drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
-        #         fill = self.tubeColor)
+        drawCircle(self.x, self.y, 15, fill = self.tubeColor, border = self.tubeBorder)
 
         drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
                    borderWidth = 10)
         
-        # drawCircle(self.lPointX, self.lPointY, 10, fill = None, border = "yellow", 
-                #    borderWidth = 1)
-        
-        drawCircle(self.rPointX, self.rPointY, 10, fill = None, border = "red", 
-                   borderWidth = 1)
-        
     def mouseMove(self, mouseX, mouseY):
-        differenceX = self.x - mouseX
-        differenceY = self.y - mouseY
-        self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
-
-        self.drawAngleRect((self.x, self.y), ((self.x + self.turretDiag), self.y), self.turretDegrees)
-        
         # rotate(origin, point, angle)        
         self.mX, self.mY = mouseX, mouseY
-
+        self.followTarget()
     
-    def drawAngleRect(self, origin, centerPoint, rotationDegree):
-        # leftBase = Player.rotate(origin, centerPoint, -rotationDegree // 2)
-        rightBase = Player.rotate(origin, centerPoint, rotationDegree // 2)
-        # self.lPointX, self.lPointY = leftBase
-        self.rPointX, self.rPointY = rightBase
+    def followTarget(self):
+        differenceX = self.x - self.mX
+        differenceY = self.y - self.mY 
 
-    # A good explination on how to rotate a point about a point
-    # Direct copy and paste. 
-    # https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python
-    @staticmethod
-    def rotate(origin, point, angle):
-        ox, oy = origin
-        px, py = point
-
-        angle = math.radians(angle) # Convert radians needed for trigonometry
-        qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
-        qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)        
+        self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
         
-        return qx, qy
+        tubeBaseDistance = (self.baseSize + self.tubeLength) // 2
+        self.tubeX = self.x - tubeBaseDistance * math.cos(math.radians(self.turretDegrees))
+        self.tubeY = self.y - tubeBaseDistance * math.sin(math.radians(self.turretDegrees))
 
     def keyPress(self, key):
         pass           
@@ -104,6 +78,11 @@ class Player:
 
         if 'a' in keys: 
             self.degrees -= self.dAngle
+
         elif 'd' in keys:
-            self.degrees += self.dAngle          
+            self.degrees += self.dAngle      
+        
+        self.followTarget()
+
+
 
