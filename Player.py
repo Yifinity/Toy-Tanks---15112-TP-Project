@@ -25,7 +25,6 @@ class Player:
         self.tubeLength = 30
         self.tubeX = self.x - self.baseSize / 2
         self.tubeY = self.y - self.baseSize / 2
-
         self.tubeDegree = 0
 
         # Change in angle
@@ -36,32 +35,34 @@ class Player:
         drawRect(self.x, self.y, self.width, self.height,
                 fill = self.color, align = 'center', rotateAngle = self.degrees)
         
-        # drawRect(self.x, self.y, self.baseSize, self.baseSize, align = 'center',
-        #         fill = self.turretColor, rotateAngle = self.turretDegrees)
-    
         drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
                  align = 'center', rotateAngle = self.turretDegrees,
                  fill = self.tubeColor, border = self.tubeBorder)
-
-        drawCircle(self.x, self.y, 15, fill = self.tubeColor, border = self.tubeBorder)
-
+        
+        drawCircle(self.x, self.y, 15, fill = self.tubeColor,
+                   border = self.tubeBorder)
+        
         drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
                    borderWidth = 10)
         
-    def mouseMove(self, mouseX, mouseY):
-        # rotate(origin, point, angle)        
+    def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
         self.followTarget()
     
+    # Have the turret follow the mouse position. 
     def followTarget(self):
         differenceX = self.x - self.mX
         differenceY = self.y - self.mY 
-
+        # Get our degrees using inverse tan
         self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
-        
-        tubeBaseDistance = (self.baseSize + self.tubeLength) // 2
-        self.tubeX = self.x - tubeBaseDistance * math.cos(math.radians(self.turretDegrees))
-        self.tubeY = self.y - tubeBaseDistance * math.sin(math.radians(self.turretDegrees))
+
+        # Degrees needed for trigonometry
+        trigDegrees = math.radians(self.turretDegrees)
+
+        # distance between the center of the tube and the tank. 
+        tubeDistance = (self.baseSize + self.tubeLength) // 2
+        self.tubeX = self.x - tubeDistance * math.cos(trigDegrees)
+        self.tubeY = self.y - tubeDistance * math.sin(trigDegrees)
 
     def keyPress(self, key):
         pass           
@@ -82,6 +83,7 @@ class Player:
         elif 'd' in keys:
             self.degrees += self.dAngle      
         
+        # No matter what direction we go, update the turret to follow
         self.followTarget()
 
 
