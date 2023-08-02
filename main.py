@@ -23,11 +23,9 @@ def onMouseMove(app, mouseX, mouseY):
     # We just want the player
     app.objects[0].mouseMove(mouseX, mouseY)
 
-
 def onKeyPress(app, key):
     for object in app.objects:
         object.keyPress(key)
-
 
 def onKeyHold(app, keys):
     for object in app.objects:
