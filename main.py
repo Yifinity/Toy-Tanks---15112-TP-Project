@@ -11,7 +11,10 @@ from Player import *
 def onAppStart(app):
     # Send in our player as our first object 
     app.objects = [Player()]
-    pass
+
+def redrawAll(app):
+    for object in app.objects:
+        object.redraw(app)
 
 def onMousePress(app, mouseX, mouseY):
     pass
@@ -29,10 +32,6 @@ def onKeyPress(app, key):
 def onKeyHold(app, keys):
     for object in app.objects:
         object.keyHold(keys)
-
-def redrawAll(app):
-    for object in app.objects:
-        object.redraw(app)
 
 def main():
     runApp(width = 800, height = 600)

@@ -33,7 +33,6 @@ class Player:
         # Change in angle
         self.dAngle = 5
 
-    
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
                 borderWidth = self.borderWidth, fill = self.color, 
