@@ -9,6 +9,7 @@ from Player import *
 '''
 
 def onAppStart(app):
+    # Send in our player as our first object 
     app.objects = [Player()]
     pass
 
