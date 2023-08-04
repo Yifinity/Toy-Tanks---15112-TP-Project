@@ -110,7 +110,7 @@ class Player:
         
     def keyHold(self, keys):
         newX, newY, newDegrees = self.x, self.y, self.degrees
-        # if-elif pairs ensures no control conflict
+        # if-elif pairs ensures no control conflicts
         if 'w' in keys:
             newX += 2 * math.cos(math.radians(self.degrees))
             newY +=  2 * math.sin(math.radians(self.degrees))
@@ -125,6 +125,7 @@ class Player:
         elif 'd' in keys:
             newDegrees += self.dAngle      
         
+        # Make sure that the new bounds work - if so, we'll implement them. 
         self.checkBounds(app, newX, newY, newDegrees)
         # No matter what direction we go, update the turret to follow
         self.followTarget()

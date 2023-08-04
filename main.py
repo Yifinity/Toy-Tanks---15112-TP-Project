@@ -6,17 +6,20 @@
 '''
 from Player import *
 from Projectile import * 
+from Grid import *
 
 
 def onAppStart(app):
     # Use 60 sets per second for easy conversion
     app.stepsPerSecond = 60
     # Send in our player as our first object 
+    app.grid = Grid(app)
     app.user = Player()
     app.objects = [app.user]
 
 
 def redrawAll(app):
+    app.grid.redraw(app)
     for object in app.objects:
         object.redraw(app)
 
@@ -48,6 +51,6 @@ def onKeyHold(app, keys):
     
 
 def main():
-    runApp(width = 1000, height = 500)
+    runApp(width = 800, height = 600)
 
 main()
