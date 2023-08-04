@@ -15,11 +15,14 @@ class Player:
         self.borderWidth = 3
 
         #Mouse:
-        self.mX = 0
-        self.mY = 0
+        self.mX = app.width // 2
+        self.mY = app.height // 2
 
         # Turret:
-        self.turretDegrees = 0
+        self.differenceX = self.x - self.mX
+        self.differenceY = self.y - self.mY 
+        self.turretDegrees = math.degrees(
+                                math.atan2(self.differenceY, self.differenceX))
         self.tubeColor = rgb(75, 75, 255)
         self.tubeBorder = 'black'
         self.baseSize = 8
@@ -27,8 +30,10 @@ class Player:
 
         # Tube - end of turret
         self.tubeLength = 30
-        self.tubeX = self.x - self.baseSize / 2
-        self.tubeY = self.y - self.baseSize / 2
+        # distance between the center of the tube and the tank. 
+        self.tubeDistance = (self.baseSize + self.tubeLength) // 2
+        self.tubeX = self.x - self.tubeDistance * math.cos(self.turretDegrees)
+        self.tubeY = self.y - self.tubeDistance * math.sin(self.turretDegrees)
         self.tubeDegree = 0
 
         # Change in angle
@@ -110,14 +115,12 @@ class Player:
 
     # *Helper have the turret follow the mouse position. 
     def followTarget(self):
-        differenceX = self.x - self.mX
-        differenceY = self.y - self.mY 
+        self.differenceX = self.x - self.mX
+        self.differenceY = self.y - self.mY 
         # Get our degrees using inverse tan
-        self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
+        self.turretDegrees = math.degrees(
+                                math.atan2(self.differenceY, self.differenceX))
         # Degrees needed for trigonometry
         trigDegrees = math.radians(self.turretDegrees)
-
-        # distance between the center of the tube and the tank. 
-        tubeDistance = (self.baseSize + self.tubeLength) // 2
-        self.tubeX = self.x - tubeDistance * math.cos(trigDegrees)
-        self.tubeY = self.y - tubeDistance * math.sin(trigDegrees)
+        self.tubeX = self.x - self.tubeDistance * math.cos(trigDegrees)
+        self.tubeY = self.y - self.tubeDistance * math.sin(trigDegrees)

@@ -1,11 +1,12 @@
-from Player import *
-from Projectile import * 
 ''' 
 * Toy Tanks
 * CMU 15112 Term Project
 * Author: Yifan Jiang
 * Date: 10 August 2023
 '''
+from Player import *
+from Projectile import * 
+
 
 def onAppStart(app):
     # Use 60 sets per second for easy conversion
