@@ -37,8 +37,12 @@ class Projectile:
             self.bounceAmount += 1 # update bounce count
             if self.bounceAmount < 2: 
                 # Reverse direction
-                self.dX *= -1 if not (0 <= self.cX < app.width) else self.dX
-                self.dY *= -1 if not (0 <= self.cY < app.height) else self.dY
+                if not (0 <= self.cX < app.width):
+                    self.dX *= -1
+                
+                if not (0 <= self.cY < app.height):
+                    self.dY *= -1
+
                 return True
             
             else:
