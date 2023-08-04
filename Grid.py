@@ -64,8 +64,8 @@ class Grid:
             
 
                 if self.gridMap[row][col] == 1:
-                    cCol = rgb(208, 176, 102)
-                    cBorder = rgb(155, 129, 70)
+                    cCol = rgb(242, 225, 185)
+                    cBorder = rgb(205, 179, 119)
                     drawRect(cellLeft, cellTop, self.cWidth, self.cHeight,
                               fill = cCol, border = cBorder, borderWidth = 5)
 
