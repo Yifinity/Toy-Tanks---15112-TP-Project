@@ -76,23 +76,37 @@ class Player:
         pass           
         
     def keyHold(self, keys):
+        newX, newY, newDegrees = self.x, self.y, self.degrees
         # if-elif pairs ensures no control conflict
         if 'w' in keys:
-            self.x += 2 * math.cos(math.radians(self.degrees))
-            self.y +=  2 * math.sin(math.radians(self.degrees))
+            newX += 2 * math.cos(math.radians(self.degrees))
+            newY +=  2 * math.sin(math.radians(self.degrees))
             
         elif 's' in keys: 
-            self.x -= 2 * math.cos(math.radians(self.degrees))
-            self.y -= 2 * math.sin(math.radians(self.degrees))
+            newX -= 2 * math.cos(math.radians(self.degrees))
+            newY -= 2 * math.sin(math.radians(self.degrees))
 
         if 'a' in keys: 
-            self.degrees -= self.dAngle
+            newDegrees -= self.dAngle
 
         elif 'd' in keys:
-            self.degrees += self.dAngle      
+            newDegrees += self.dAngle      
         
+        self.checkBounds(app, newX, newY, newDegrees)
         # No matter what direction we go, update the turret to follow
         self.followTarget()
+    
+    def checkBounds(self, app, newX, newY, newDegrees):
+        # Verify that these new move requests work and go to default if no
+        if (0 <= newX < app.width):
+            self.x = newX
+
+        if (0 <= newY < app.height):
+            self.y = newY
+        
+        self.degrees = newDegrees
+
+
 
     # *Helper have the turret follow the mouse position. 
     def followTarget(self):
