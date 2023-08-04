@@ -11,10 +11,10 @@ class Player:
         self.color = rgb(6, 6, 193)
         self.x = app.width / 2
         self.y = app.height / 2
+        self.borderWidth = 3
         self.border = 'darkBlue'
         # Diagonal cutting user
         self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
-
         # Angles that make up the four corners of the user
         self.cornerAngles = [
             math.atan2(-self.width / 2, -self.height / 2), 
@@ -33,12 +33,13 @@ class Player:
             (self.x + self.diag * math.cos(self.cornerAngles[3] + self.degrees),
              self.y + self.diag * math.sin(self.cornerAngles[3] + self.degrees)),
         ]
-
-        self.borderWidth = 3
-
+        
         #Mouse:
         self.mX = app.width // 2
         self.mY = app.height // 2
+        self.mVis = False # is circle visible. 
+        self.mRad = 50
+        self.mBorderWidth = 10
 
         # Turret:
         self.differenceX = self.x - self.mX
@@ -76,8 +77,8 @@ class Player:
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
         
-        drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
-                   borderWidth = 10)
+        drawCircle(self.mX, self.mY, self.mRad, fill = None, border = self.color, 
+                   borderWidth = self.mBorderWidth, visible = self.mVis)
         
         for (corX, corY) in self.corners:
             drawCircle(corX, corY, 5, fill = None, border = self.color, 
@@ -96,7 +97,7 @@ class Player:
 
     def mousePress(self, mouseX, mouseY):
         # Limit shots to five at a time. 
-        if len(self.projectiles) <= 5: 
+        if len(self.projectiles) < 5: 
             projectileX = self.tubeX - 15 * math.cos(math.radians(self.turretDegrees))
             projectileY = self.tubeY - 15 * math.sin(math.radians(self.turretDegrees))
                         
@@ -130,10 +131,11 @@ class Player:
     
     def checkBounds(self, app, newX, newY, newDegrees):
         # Verify that these new move requests work and go to default if no
-        if (0 <= newX < app.width):
+        # We check width only because we can't straf sideways
+        if (self.width / 2 <= newX < app.width - self.width/2):
             self.x = newX
 
-        if (0 <= newY < app.height):
+        if (self.width / 2 <= newY < app.height - self.width):
             self.y = newY
         
         for rads in range(len(self.cornerAngles)):
@@ -150,6 +152,13 @@ class Player:
     def followTarget(self):
         self.differenceX = self.x - self.mX
         self.differenceY = self.y - self.mY 
+
+        # have no circle appear if we're too close
+        if (self.differenceX ** 2 + self.differenceY ** 2) ** 0.5 < self.mRad:
+            self.mVis = False
+
+        else:
+            self.mVis = True
         # Get our degrees using inverse tan
         self.turretDegrees = math.degrees(
                                 math.atan2(self.differenceY, self.differenceX))

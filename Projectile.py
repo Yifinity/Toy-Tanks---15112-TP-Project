@@ -48,8 +48,3 @@ class Projectile:
             else:
                 # If both cases fail, 
                 return False
-        
-
-
-        
-        
