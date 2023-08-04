@@ -12,7 +12,7 @@ class Grid:
         self.gWidth = app.width
 
         # Red ribbon starts around 533 pxls
-        self.gHeight = app.height - 67 
+        self.gHeight = app.height - 70 
 
         self.rows = 20
         self.cols = 16

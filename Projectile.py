@@ -1,9 +1,13 @@
 from cmu_graphics import *
+from Grid import *
 import math
 # from Player import *
 
 class Projectile:
-    def __init__(self, cX, cY, cAngle):
+    def __init__(self, cX, cY, cAngle, grid):
+        # get our grid to verify bounds. 
+        self.grid = grid
+
         self.cX = cX
         self.cY = cY
         self.cAngle = cAngle # Face in right direction
@@ -29,7 +33,7 @@ class Projectile:
     def checkCollision(self, app):
         # if we bounce more than 2 times, destroy the projectile
         # if we're inside bounds
-        if (0 <= self.cX < app.width) and (0 <= self.cY < app.height):
+        if (0 <= self.cX < self.grid.gWidth) and (0 <= self.cY < self.grid.gHeight):
             return True
 
         # Projectile is outside. 
@@ -37,10 +41,10 @@ class Projectile:
             self.bounceAmount += 1 # update bounce count
             if self.bounceAmount < 2: 
                 # Reverse direction
-                if not (0 <= self.cX < app.width):
+                if not (0 <= self.cX < self.grid.gWidth):
                     self.dX *= -1
                 
-                if not (0 <= self.cY < app.height):
+                if not (0 <= self.cY < self.grid.gHeight):
                     self.dY *= -1
 
                 return True

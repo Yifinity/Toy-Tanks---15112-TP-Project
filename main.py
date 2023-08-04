@@ -14,7 +14,7 @@ def onAppStart(app):
     app.stepsPerSecond = 60
     # Send in our player as our first object 
     app.grid = Grid(app)
-    app.user = Player()
+    app.user = Player(app.grid)
     app.objects = [app.user]
 
 

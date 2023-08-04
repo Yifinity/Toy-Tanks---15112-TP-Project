@@ -1,9 +1,13 @@
 from cmu_graphics import *
 from Projectile import *
+from Grid import *
 import math
 
 class Player:
-    def __init__(self):
+    def __init__(self, grid):
+        # Send the grid in to ensure we follow the bounds. 
+        self.grid = grid
+
         # Tank:
         self.degrees = 0
         self.width = 35
@@ -13,6 +17,8 @@ class Player:
         self.y = app.height / 2
         self.borderWidth = 3
         self.border = 'darkBlue'
+        
+        # Points on corners of rectangle. 
         # Diagonal cutting user
         self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
         # Angles that make up the four corners of the user
@@ -103,7 +109,7 @@ class Player:
                         
             self.projectiles.append(
                 Projectile(projectileX, projectileY, 
-                           math.radians(self.turretDegrees)))
+                           math.radians(self.turretDegrees), self.grid))
 
     def keyPress(self, key):
         pass           
@@ -133,12 +139,15 @@ class Player:
     def checkBounds(self, app, newX, newY, newDegrees):
         # Verify that these new move requests work and go to default if no
         # We check width only because we can't straf sideways
-        if (self.width / 2 <= newX < app.width - self.width/2):
+        # Ensure we're in the grid
+        if (self.width / 2 <= newX < self.grid.gWidth - self.width / 2):
             self.x = newX
 
-        if (self.width / 2 <= newY < app.height - self.width):
+        if (self.height / 2 <= newY < self.grid.gHeight - self.height / 2):
             self.y = newY
         
+
+        # Update our points. 
         for rads in range(len(self.cornerAngles)):
             newRads = math.radians(newDegrees)
             cornerX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
