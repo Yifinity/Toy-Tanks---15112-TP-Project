@@ -1,4 +1,5 @@
 from cmu_graphics import *
+from Projectile import *
 import math
 
 class Player:
@@ -31,7 +32,10 @@ class Player:
         self.tubeDegree = 0
 
         # Change in angle
-        self.dAngle = 5
+        self.dAngle = 2
+
+        # Track projectiles
+        self.projectiles = []
 
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
@@ -48,24 +52,25 @@ class Player:
         drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
                    borderWidth = 10)
         
+        for projectile in self.projectiles:
+            projectile.drawProjectile(app)
+        
     def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
         self.followTarget()
     
-    # Have the turret follow the mouse position. 
-    def followTarget(self):
-        differenceX = self.x - self.mX
-        differenceY = self.y - self.mY 
-        # Get our degrees using inverse tan
-        self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
+    def onStep(self, app):
+        pass
 
-        # Degrees needed for trigonometry
-        trigDegrees = math.radians(self.turretDegrees)
-
-        # distance between the center of the tube and the tank. 
-        tubeDistance = (self.baseSize + self.tubeLength) // 2
-        self.tubeX = self.x - tubeDistance * math.cos(trigDegrees)
-        self.tubeY = self.y - tubeDistance * math.sin(trigDegrees)
+    def mousePress(self, mouseX, mouseY):
+        # Limit shots to five at a time. 
+        if len(self.projectiles) <= 5: 
+            projectileX = self.tubeX - 15 * math.cos(math.radians(self.turretDegrees))
+            projectileY = self.tubeY - 15 * math.sin(math.radians(self.turretDegrees))
+                        
+            self.projectiles.append(
+                Projectile(projectileX, projectileY, 
+                           math.radians(self.turretDegrees)))
 
     def keyPress(self, key):
         pass           
@@ -73,12 +78,12 @@ class Player:
     def keyHold(self, keys):
         # if-elif pairs ensures no control conflict
         if 'w' in keys:
-            self.x += 4 * math.cos(math.radians(self.degrees))
-            self.y +=  4 * math.sin(math.radians(self.degrees))
+            self.x += 2 * math.cos(math.radians(self.degrees))
+            self.y +=  2 * math.sin(math.radians(self.degrees))
             
         elif 's' in keys: 
-            self.x -= 4 * math.cos(math.radians(self.degrees))
-            self.y -= 4 * math.sin(math.radians(self.degrees))
+            self.x -= 2 * math.cos(math.radians(self.degrees))
+            self.y -= 2 * math.sin(math.radians(self.degrees))
 
         if 'a' in keys: 
             self.degrees -= self.dAngle
@@ -89,5 +94,16 @@ class Player:
         # No matter what direction we go, update the turret to follow
         self.followTarget()
 
+    # *Helper have the turret follow the mouse position. 
+    def followTarget(self):
+        differenceX = self.x - self.mX
+        differenceY = self.y - self.mY 
+        # Get our degrees using inverse tan
+        self.turretDegrees = math.degrees(math.atan2(differenceY, differenceX))
+        # Degrees needed for trigonometry
+        trigDegrees = math.radians(self.turretDegrees)
 
-
+        # distance between the center of the tube and the tank. 
+        tubeDistance = (self.baseSize + self.tubeLength) // 2
+        self.tubeX = self.x - tubeDistance * math.cos(trigDegrees)
+        self.tubeY = self.y - tubeDistance * math.sin(trigDegrees)

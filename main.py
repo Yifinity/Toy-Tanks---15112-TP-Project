@@ -1,27 +1,41 @@
 from Player import *
-
+from Projectile import * 
 ''' 
 * Toy Tanks
 * CMU 15112 Term Project
 * Author: Yifan Jiang
 * Date: 10 August 2023
-*
 '''
 
 def onAppStart(app):
+    # Use 60 sets per second for easy conversion
+    app.stepsPerSecond = 60
     # Send in our player as our first object 
-    app.objects = [Player()]
+    app.user = Player()
+    app.objects = [app.user]
+
 
 def redrawAll(app):
     for object in app.objects:
         object.redraw(app)
 
+def onStep(app):
+    for projectile in app.user.projectiles:
+        if projectile.checkCollision(app): # if it does work, 
+            projectile.onStep()
+        
+        else:
+            app.user.projectiles.remove(projectile)
+
+    for object in app.objects:
+        object.onStep(app)
+
 def onMousePress(app, mouseX, mouseY):
-    pass
+    app.user.mousePress(mouseX, mouseY)
 
 def onMouseMove(app, mouseX, mouseY):
     # We just want the player
-    app.objects[0].mouseMove(mouseX, mouseY)
+    app.user.mouseMove(mouseX, mouseY)
 
 def onKeyPress(app, key):
     for object in app.objects:
@@ -30,8 +44,9 @@ def onKeyPress(app, key):
 def onKeyHold(app, keys):
     for object in app.objects:
         object.keyHold(keys)
+    
 
 def main():
-    runApp(width = 800, height = 600)
+    runApp(width = 1000, height = 500)
 
 main()
