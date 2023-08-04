@@ -1,6 +1,8 @@
 # Grid class that creates a map for the user to interact on 
 from cmu_graphics import *
-# from PIL import Image
+from PIL import Image
+import random
+
 
 class Grid:
     def __init__(self, app):
@@ -18,10 +20,10 @@ class Grid:
         self.cWidth = self.gWidth // self.rows
         self.cHeight = self.gHeight // self.cols
 
-        print(f'LOWEST POINT = {self.gTop + self.gHeight}')
         # Edited Wood Photo from Free Stock photos by Vecteezy 
+        # Inspired from Basic PIL Methods. 
         # "https://www.vecteezy.com/free-photos"
-        self.woodUrl = 'Images\Background.png'
+        self.background = CMUImage(Image.open('Images\Background.png'))
 
 
         # Grid map inspired from Wii Tanks' map on Mission 8
@@ -32,12 +34,12 @@ class Grid:
             [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
             [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
             [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
@@ -45,8 +47,10 @@ class Grid:
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
 
+
+
     def redraw(self, app):
-        drawImage(self.woodUrl, app.width // 2, app.height // 2, align = 'center') 
+        drawImage(self.background, app.width // 2, app.height // 2, align = 'center') 
         # drawRect(0, 0, app.width, app.height, fill = rgb(210, 251, 142))
         self.drawDrawGrid(app)
 
@@ -57,24 +61,14 @@ class Grid:
             for col in range(len(self.gridMap[row])):
                 cellTop = self.gTop + (self.cHeight * row)
                 cellLeft = self.gLeft + (self.cWidth * col)
-                cellCol = rgb(243, 242, 208)
-                borderCol = rgb(235, 233, 183)
-
+            
 
                 if self.gridMap[row][col] == 1:
-                    # Draw an image if value is 1
-                  drawRect(cellLeft, cellTop, self.cWidth, self.cHeight, 
-                            fill = cellCol, border = borderCol, borderWidth = 1)
+                    cCol = rgb(208, 176, 102)
+                    cBorder = rgb(155, 129, 70)
+                    drawRect(cellLeft, cellTop, self.cWidth, self.cHeight,
+                              fill = cCol, border = cBorder, borderWidth = 5)
 
-                    # drawImage(self.woodUrl, cellLeft, cellTop, align = 'left', 
-                            # width = self.cWidth, height = self.cHeight)
-
-                # else:
-
-                    # # print(f'Cell {row + col} at: {cellLeft, cellTop}')
-  
-                
-                
-    # def drawGrid(
-        
-    # )
+                    # image = self.blocks[0]
+                    # drawImage(image, cellLeft, cellTop, border = borderCol,
+                    #           width = self.cWidth, height = self.cHeight)
