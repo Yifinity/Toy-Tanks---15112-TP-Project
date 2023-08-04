@@ -12,6 +12,28 @@ class Player:
         self.x = app.width / 2
         self.y = app.height / 2
         self.border = 'darkBlue'
+        # Diagonal cutting user
+        self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
+
+        # Angles that make up the four corners of the user
+        self.cornerAngles = [
+            math.atan2(-self.width / 2, -self.height / 2), 
+            math.atan2(self.width / 2, -self.height / 2), 
+            math.atan2(-self.width / 2, self.height / 2), 
+            math.atan2(self.width / 2, self.height / 2), 
+            ]
+
+        self.corners = [
+            (self.x + self.diag * math.cos(self.cornerAngles[0] + self.degrees),
+             self.y + self.diag * math.sin(self.cornerAngles[0] + self.degrees)),
+            (self.x + self.diag * math.cos(self.cornerAngles[1] + self.degrees),
+             self.y + self.diag * math.sin(self.cornerAngles[1] + self.degrees)),
+            (self.x + self.diag * math.cos(self.cornerAngles[2] + self.degrees),
+             self.y + self.diag * math.sin(self.cornerAngles[2] + self.degrees)),
+            (self.x + self.diag * math.cos(self.cornerAngles[3] + self.degrees),
+             self.y + self.diag * math.sin(self.cornerAngles[3] + self.degrees)),
+        ]
+
         self.borderWidth = 3
 
         #Mouse:
@@ -56,6 +78,11 @@ class Player:
         
         drawCircle(self.mX, self.mY, 50, fill = None, border = self.color, 
                    borderWidth = 10)
+        
+        for (corX, corY) in self.corners:
+            drawCircle(corX, corY, 5, fill = None, border = self.color, 
+                   borderWidth = 1)
+            
         
         for projectile in self.projectiles:
             projectile.drawProjectile(app)
@@ -109,9 +136,15 @@ class Player:
         if (0 <= newY < app.height):
             self.y = newY
         
+        for rads in range(len(self.cornerAngles)):
+            newRads = math.radians(newDegrees)
+            cornerX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
+            cornerY = self.y + self.diag * math.sin(self.cornerAngles[rads] + newRads)
+            
+            self.corners[rads] = (cornerX, cornerY)
+
+
         self.degrees = newDegrees
-
-
 
     # *Helper have the turret follow the mouse position. 
     def followTarget(self):
