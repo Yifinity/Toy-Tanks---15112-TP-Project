@@ -145,6 +145,7 @@ class Player:
                             math.radians(self.turretDegrees), self.grid))
     
             self.availableProjectiles -= 1
+            self.stepCounts = 0  
             
     def keyPress(self, key):
         pass           

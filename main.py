@@ -38,7 +38,6 @@ def onStep(app):
         object.onStep(app)
     
 
-
 def onMousePress(app, mouseX, mouseY):
     app.user.mousePress(mouseX, mouseY)
 
