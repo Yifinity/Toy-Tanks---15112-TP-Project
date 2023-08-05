@@ -1,13 +1,13 @@
 from cmu_graphics import *
 from Projectile import *
-from Grid import *
 import math
 import copy
 
 class Player:
-    def __init__(self, grid):
-        # Send the grid in to ensure we follow the bounds. 
-        self.grid = grid
+    def __init__(self, app):
+        # Objects that we take the alias of from app 
+        self.grid = app.grid
+        self.projectileManager = app.projectileManager
 
         # Tank:
         self.degrees = 0
@@ -26,7 +26,6 @@ class Player:
         # For the side hitpoints, we just need half of the width or height. 
         self.halfWid = self.width / 2
         self.halfHi = self.height / 2
-                
 
         self.hitAngles = [
             math.atan2(-self.height / 2, -self.width / 2), 
@@ -88,8 +87,6 @@ class Player:
         # Change in angle
         self.dAngle = 3
 
-        # Track projectiles
-        self.projectiles = []
 
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
@@ -107,8 +104,6 @@ class Player:
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
             
-        for projectile in self.projectiles:
-            projectile.drawProjectile(app)
         
     def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
@@ -118,17 +113,15 @@ class Player:
         pass
 
     def mousePress(self, mouseX, mouseY):
-        # Limit shots to five at a time. 
-        if len(self.projectiles) < 5: 
-            # Calculate the dX and dY using trigonometry. 
-            trigX =  15 * math.cos(math.radians(self.turretDegrees))
-            trigY = 15 * math.sin(math.radians(self.turretDegrees))
-            projectileX = self.tubeX - trigX
-            projectileY = self.tubeY - trigY
-                        
-            self.projectiles.append(
-                Projectile(projectileX, projectileY, 
-                           math.radians(self.turretDegrees), self.grid))
+        # Calculate the dX and dY using trigonometry. 
+        trigX =  15 * math.cos(math.radians(self.turretDegrees))
+        trigY = 15 * math.sin(math.radians(self.turretDegrees))
+        projectileX = self.tubeX - trigX
+        projectileY = self.tubeY - trigY
+                    
+        self.projectileManager.projectiles.append(
+            Projectile(projectileX, projectileY, 
+                        math.radians(self.turretDegrees), self.grid))
 
     def keyPress(self, key):
         pass           
@@ -190,6 +183,7 @@ class Player:
                  or (not 0 <= hitY < self.grid.gHeight)
                  or (not self.grid.checkPoint(hitX, hitY))):
                  return False
+            
         return True
 
 
