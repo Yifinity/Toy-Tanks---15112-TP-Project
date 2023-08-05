@@ -17,13 +17,8 @@ def onAppStart(app):
     app.grid = Grid(app)
     app.objects = []
     app.projectileManager = ProjectileManager(app)
-    
-    # ProjectileManager must be defined before player, and 
-    # Grid/Objects must be defined before Projectilemanager, so 
-    # Objects is initially blank
-    app.user = Player(app)
-    app.objects.append(app.user)
 
+    app.objects.append(Player(app))
 def redrawAll(app):
     app.grid.redraw(app)
     app.projectileManager.redraw(app)
@@ -39,17 +34,21 @@ def onStep(app):
     
 
 def onMousePress(app, mouseX, mouseY):
-    app.user.mousePress(mouseX, mouseY)
+    for object in app.objects:
+        object.mousePress(mouseX, mouseY)
 
 def onMouseMove(app, mouseX, mouseY):
     # We just want the player
-    app.user.mouseMove(mouseX, mouseY)
+    for object in app.objects:
+        object.mouseMove(mouseX, mouseY)
+
 
 def onKeyPress(app, key):
     pass
 
 def onKeyHold(app, keys):
-    app.user.keyHold(keys)
+    for object in app.objects:
+        object.keyHold(keys)
     
 
 def main():

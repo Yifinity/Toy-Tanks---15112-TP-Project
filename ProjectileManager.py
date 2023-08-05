@@ -12,9 +12,18 @@ class ProjectileManager:
     def onStep(self, app):
         # First check that it's not empty
         for projectile in self.projectiles:
-            if projectile.checkCollision(app): # if it does work, 
-                projectile.onStep()
-        
+            # if in bounds
+            if projectile.checkCollision(app):  
+                for object in self.objects:
+                    # Check collision of targets
+                    check = object.checkHit(projectile)
+                    if check:
+                        projectile.onStep()
+                    
+                    else:
+                        # Get rid of the object. 
+                        self.objects.remove(object)
+
             else: self.projectiles.remove(projectile)
 
     def redraw(self, app):

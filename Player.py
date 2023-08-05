@@ -117,12 +117,18 @@ class Player:
             pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
             drawCircle(pX, pY, self.pR, fill = 'black')
             
-        
+        for point in self.hitPoints:
+            if point == 0 or point == 3:
+                cX, cY = self.hitPoints[point]
+                drawCircle(cX, cY, 5, fill = 'red')
+            
+
     def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
         self.followTarget()
     
     def onStep(self, app):
+        # print(self.degrees)
         self.stepCounts += 1
         self.timeInSecs = self.stepCounts / 60
         
@@ -173,6 +179,21 @@ class Player:
         # No matter what direction we go, update the turret to follow
         self.followTarget()
     
+    def checkHit(self, projectile):
+        if self.degrees % 90 == 0:
+            top, left = self.hitPoints[0][0], self.hitPoints[0][1]
+            bottom, right = self.hitPoints[3][0], self.hitPoints[3][1]
+
+            if ((left <= projectile.cX <= right)
+                and (bottom <= projectile.cY <= top)):
+                return False
+            else:
+                return True
+        else:
+            return True
+
+
+
     def checkBounds(self, newX, newY, newDegrees):
         xQualifies = True
         yQualifies = True
