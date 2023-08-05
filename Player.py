@@ -22,7 +22,6 @@ class Player:
         # HitPoints of rectangle. 
         # Diagonal cutting user
         self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
-        
         # For the side hitpoints, we just need half of the width or height. 
         self.halfWid = self.width / 2
         self.halfHi = self.height / 2
@@ -83,9 +82,18 @@ class Player:
         self.tubeX = self.x - self.tubeDistance * math.cos(self.turretDegrees)
         self.tubeY = self.y - self.tubeDistance * math.sin(self.turretDegrees)
         self.tubeDegree = 0
-
         # Change in angle
         self.dAngle = 3
+
+        #Projectiles
+        self.availableProjectiles = 5
+        self.pY = 565
+        self.pR = 10
+        self.pX = app.width // 2 - (2 * 3 * self.pR)
+
+        #Timer Constants
+        self.stepCounts = 0
+        self.timeInSecs = 0
 
 
     def redraw(self, app):
@@ -103,6 +111,11 @@ class Player:
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
+        
+        # Show how many projectiles we have 
+        for projectIdx in range(self.availableProjectiles):
+            pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
+            drawCircle(pX, pY, self.pR, fill = 'black')
             
         
     def mouseMove(self, mouseX, mouseY):     
@@ -110,19 +123,29 @@ class Player:
         self.followTarget()
     
     def onStep(self, app):
-        pass
+        self.stepCounts += 1
+        self.timeInSecs = self.stepCounts / 60
+        
+        # If we're out of projectiles - add one every half second. 
+        if (self.availableProjectiles < 5 and self.timeInSecs % 0.5 == 0):
+            self.availableProjectiles += 1
 
+    
     def mousePress(self, mouseX, mouseY):
-        # Calculate the dX and dY using trigonometry. 
-        trigX =  15 * math.cos(math.radians(self.turretDegrees))
-        trigY = 15 * math.sin(math.radians(self.turretDegrees))
-        projectileX = self.tubeX - trigX
-        projectileY = self.tubeY - trigY
-                    
-        self.projectileManager.projectiles.append(
-            Projectile(projectileX, projectileY, 
-                        math.radians(self.turretDegrees), self.grid))
-
+        # Ensure that we're not violating any timer rules. 
+        # Calculate the x and y vals using trigonometry. 
+        if self.availableProjectiles > 0:
+            trigX =  15 * math.cos(math.radians(self.turretDegrees))
+            trigY = 15 * math.sin(math.radians(self.turretDegrees))
+            projectileX = self.tubeX - trigX
+            projectileY = self.tubeY - trigY
+            
+            self.projectileManager.projectiles.append(
+                Projectile(projectileX, projectileY, 
+                            math.radians(self.turretDegrees), self.grid))
+    
+            self.availableProjectiles -= 1
+            
     def keyPress(self, key):
         pass           
         
