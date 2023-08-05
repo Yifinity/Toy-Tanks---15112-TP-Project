@@ -133,28 +133,45 @@ class Player:
         
         # Make sure that the new bounds work - if so, we'll implement them. 
         self.checkBounds(app, newX, newY, newDegrees)
+
         # No matter what direction we go, update the turret to follow
         self.followTarget()
     
     def checkBounds(self, app, newX, newY, newDegrees):
-        # Verify that these new move requests work and go to default if no
-        # We check width only because we can't straf sideways
-        # Ensure we're in the grid
-        if (self.width / 2 <= newX < self.grid.gWidth - self.width / 2):
-            self.x = newX
-
-        if (self.height / 2 <= newY < self.grid.gHeight - self.height / 2):
-            self.y = newY
+        xQualifies = True
+        yQualifies = True
+        degQualifies = True
         
-
-        # Update our points. 
+        # Verify that these new move requests work and go to default if not
+        # Update our points in our corners. 
         for rads in range(len(self.cornerAngles)):
             newRads = math.radians(newDegrees)
-            cornerX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
-            cornerY = self.y + self.diag * math.sin(self.cornerAngles[rads] + newRads)
+            print(self.cornerAngles[rads])
+            cornerX = int(newX + self.diag * math.cos(self.cornerAngles[rads] + newRads))
+            cornerY = int(newY + self.diag * math.sin(self.cornerAngles[rads] + newRads))
+
+            if ((not xQualifies) or (not 0 <= cornerX < self.grid.gWidth)
+                 or (not self.grid.checkPoint(cornerX, cornerY))):
+                    xQualifies = False
+            
+            if ((not yQualifies) or (not 0 <= cornerY < self.grid.gHeight)
+                 or (not self.grid.checkPoint(cornerX, cornerY))):
+                    yQualifies = False
+
+        # Ensure we're in the grid
+        if (xQualifies): 
+            self.x = newX
+
+        if (yQualifies):
+            self.y = newY
         
-            self.corners[rads] = (cornerX, cornerY)
         self.degrees = newDegrees
+        for rads in range(len(self.cornerAngles)):
+            newRads = math.radians(newDegrees)
+            currentX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
+            currentY = self.y + self.diag * math.sin(self.cornerAngles[rads] + newRads)
+
+            self.corners[rads] = (currentX, currentY)
 
     # *Helper have the turret follow the mouse position. 
     def followTarget(self):

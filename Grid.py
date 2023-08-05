@@ -77,7 +77,6 @@ class Grid:
         # get the row / column of the where pointX, pointY is. 
         col = (pointX // self.cWidth)
         row = (pointY // self.cHeight)
-
         location = self.gridMap[row][col]
         
         if location == 1: 
