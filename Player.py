@@ -2,6 +2,7 @@ from cmu_graphics import *
 from Projectile import *
 from Grid import *
 import math
+import copy
 
 class Player:
     def __init__(self, grid):
@@ -18,18 +19,25 @@ class Player:
         self.borderWidth = 3
         self.border = 'darkBlue'
         
-        # Points on hitPoints of rectangle. 
+        # HitPoints of rectangle. 
         # Diagonal cutting user
         self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
+        
+        # For the side hitpoints, we just need half of the width or height. 
+        self.halfWid = self.width / 2
+        self.halfHi = self.height / 2
+                
 
         self.hitAngles = [
             math.atan2(-self.height / 2, -self.width / 2), 
             math.atan2(-self.height / 2, self.width / 2), 
             math.atan2(self.height / 2, -self.width / 2), 
             math.atan2(self.height / 2, self.width / 2), 
-            # Add two points at the beginning and end of the rectangle. 
+            # Points that do not need the diagonal for points. 
             0,
             math.pi,
+            math.pi / 2,
+            -math.pi / 2
             ]
 
         self.hitPoints = [
@@ -41,10 +49,14 @@ class Player:
             self.y + self.diag * math.sin(self.hitAngles[2] + self.degrees)),
             (self.x + self.diag * math.cos(self.hitAngles[3] + self.degrees),
             self.y + self.diag * math.sin(self.hitAngles[3] + self.degrees)),
-            (self.x + self.diag * math.cos(self.hitAngles[4] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[4] + self.degrees)),
-            (self.x + self.diag * math.cos(self.hitAngles[5] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[5] + self.degrees)),
+            (self.x + self.halfWid * math.cos(self.hitAngles[4] + self.degrees),
+            self.y + self.halfWid * math.sin(self.hitAngles[4] + self.degrees)),
+            (self.x + self.halfWid * math.cos(self.hitAngles[5] + self.degrees),
+            self.y + self.halfWid * math.sin(self.hitAngles[5] + self.degrees)),
+            (self.x + self.halfHi * math.cos(self.hitAngles[6] + self.degrees),
+            self.y + self.halfHi * math.sin(self.hitAngles[6] + self.degrees)),
+            (self.x + self.halfHi * math.cos(self.hitAngles[7] + self.degrees),
+            self.y + self.halfHi * math.sin(self.hitAngles[7] + self.degrees))
         ]
         
         #Mouse:
@@ -94,10 +106,6 @@ class Player:
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
-        
-        for (corX, corY) in self.hitPoints:
-            drawCircle(corX, corY, 2, fill = None, border = 'red', 
-                   borderWidth = 1)
             
         for projectile in self.projectiles:
             projectile.drawProjectile(app)
@@ -143,61 +151,70 @@ class Player:
             newDegrees += self.dAngle      
         
         # Make sure that the new bounds work - if so, we'll implement them. 
-        self.checkBounds(app, newX, newY, newDegrees)
+        self.checkBounds(newX, newY, newDegrees)
 
         # No matter what direction we go, update the turret to follow
         self.followTarget()
     
-    def checkBounds(self, app, newX, newY, newDegrees):
+    def checkBounds(self, newX, newY, newDegrees):
         xQualifies = True
         yQualifies = True
         degQualifies = True
         
-        # Verify that these new move requests work and go to default if not
-        # Update our points in our hitPoints. 
-        for rads in range(len(self.hitAngles)):
-            newRads = math.radians(newDegrees)
-            cornerX = int(newX + self.diag * math.cos(self.hitAngles[rads] + newRads))
-            cornerY = int(newY + self.diag * math.sin(self.hitAngles[rads] + newRads))
-
-            if ((not xQualifies) or (not 0 <= cornerX < self.grid.gWidth)
-                 or (not self.grid.checkPoint(cornerX, cornerY))):
-                    xQualifies = False
-            
-            if ((not yQualifies) or (not 0 <= cornerY < self.grid.gHeight)
-                 or (not self.grid.checkPoint(cornerX, cornerY))):
-                    yQualifies = False
-
-        # Ensure we're in the grid
-        if (xQualifies): 
-            self.x = newX
-
-        if (yQualifies):
-            self.y = newY
+        # Degrees are the most important - so check that first. 
+        degQualifies = self.testNewPoints(self.x, self.y, newDegrees)
+        if degQualifies:
+            # Update the degrees if it passes, so we can now pass that on
+            self.degrees = newDegrees
         
+        xQualifies = self.testNewPoints(newX, self.y, self.degrees)
+        if xQualifies:
+            self.x = newX
+        
+        yQualifies = self.testNewPoints(self.x, newY, self.degrees)
+        if yQualifies:
+            self.y = newY
+
         # Update new hitPoints
-        self.updateHitPoints(newDegrees)
-        self.degrees = newDegrees
- 
+        self.updateHitPoints(self.hitPoints, self.x, self.y, self.degrees)
+    
+    def testNewPoints(self, testX, testY, testDegrees):
+        testCopy = copy.deepcopy(self.hitPoints)
+
+        self.updateHitPoints(testCopy, testX, testY, testDegrees)
+        # Test bounds and cell collision - any could return false. 
+        for hitX, hitY in testCopy:
+            hitX = int(hitX)
+            hitY = int(hitY)
+            if ((not 0 <= hitX < self.grid.gWidth)
+                 or (not 0 <= hitY < self.grid.gHeight)
+                 or (not self.grid.checkPoint(hitX, hitY))):
+                 return False
+        return True
+
 
     # Goes through all hitpoints, and modifies points as nessisary. 
-    def updateHitPoints(self, degrees):
+    def updateHitPoints(self, pointsList, modX, modY, degrees):
         inputRads = math.radians(degrees)
         for rads in range(len(self.hitAngles)):
             newRads = self.hitAngles[rads] + inputRads
             
             # The last two should have length of the width / 2
-            if rads == 4 or rads == 5:
+            if rads < 4:
                 # For the front and back points, we just want half of the width
-                halfWidth = self.width / 2
-                currentX = self.x + halfWidth * math.cos(newRads)
-                currentY = self.y + halfWidth * math.sin(newRads)  
+                currentX = modX + self.diag * math.cos(newRads)
+                currentY = modY + self.diag * math.sin(newRads)        
+
+            elif rads < 6:
+                currentX = modX + self.halfWid * math.cos(newRads)
+                currentY = modY + self.halfWid * math.sin(newRads)  
 
             else:
-                currentX = self.x + self.diag * math.cos(newRads)
-                currentY = self.y + self.diag * math.sin(newRads)        
+                currentX = modX + self.halfHi * math.cos(newRads)
+                currentY = modY + self.halfHi * math.sin(newRads)  
 
-            self.hitPoints[rads] = (currentX, currentY)
+                
+            pointsList[rads] = (currentX, currentY)
 
 
     # *Helper have the turret follow the mouse position. 
