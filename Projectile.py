@@ -44,10 +44,12 @@ class Projectile:
             # Reverse what we did to the original point 
             if self.bounceAmount < 1: 
                 # Check out of bounds
-                if (not 0 <= self.cX < self.grid.gWidth) or self.grid.checkPoint(int(self.cX), int(newY)):
+                if ((not 0 <= self.cX < self.grid.gWidth) 
+                     or self.grid.checkPoint(int(self.cX), int(newY))):
                     self.dX *= -1
                 
-                elif (not 0 <= self.cY < self.grid.gHeight) or self.grid.checkPoint(int(newX), int(self.cY)):
+                elif ((not 0 <= self.cY < self.grid.gHeight)
+                      or self.grid.checkPoint(int(newX), int(self.cY))):
                     self.dY *= -1
 
                 # update bounce count
