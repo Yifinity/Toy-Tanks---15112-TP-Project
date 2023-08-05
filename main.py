@@ -6,44 +6,45 @@
 '''
 from Player import *
 from Projectile import * 
+from ProjectileManager import *
 from Grid import *
 
 
 def onAppStart(app):
-    # Use 60 sets per second for easy conversion
+    # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60
-    # Send in our player as our first object 
+
     app.grid = Grid(app)
-    app.user = Player()
-    app.objects = [app.user]
+    app.objects = []
+    app.projectileManager = ProjectileManager(app)
 
-
+    app.objects.append(Player(app))
 def redrawAll(app):
     app.grid.redraw(app)
+    app.projectileManager.redraw(app)
     for object in app.objects:
         object.redraw(app)
+    
+
 
 def onStep(app):
-    for projectile in app.user.projectiles:
-        if projectile.checkCollision(app): # if it does work, 
-            projectile.onStep()
-        
-        else:
-            app.user.projectiles.remove(projectile)
-
+    app.projectileManager.onStep(app)
     for object in app.objects:
         object.onStep(app)
+    
 
 def onMousePress(app, mouseX, mouseY):
-    app.user.mousePress(mouseX, mouseY)
+    for object in app.objects:
+        object.mousePress(mouseX, mouseY)
 
 def onMouseMove(app, mouseX, mouseY):
     # We just want the player
-    app.user.mouseMove(mouseX, mouseY)
+    for object in app.objects:
+        object.mouseMove(mouseX, mouseY)
+
 
 def onKeyPress(app, key):
-    for object in app.objects:
-        object.keyPress(key)
+    pass
 
 def onKeyHold(app, keys):
     for object in app.objects:
