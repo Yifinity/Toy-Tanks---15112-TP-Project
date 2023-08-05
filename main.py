@@ -42,12 +42,10 @@ def onMouseMove(app, mouseX, mouseY):
     app.user.mouseMove(mouseX, mouseY)
 
 def onKeyPress(app, key):
-    for object in app.objects:
-        object.keyPress(key)
+    pass
 
 def onKeyHold(app, keys):
-    for object in app.objects:
-        object.keyHold(keys)
+    app.user.keyHold(keys)
     
 
 def main():

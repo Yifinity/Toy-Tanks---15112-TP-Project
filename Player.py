@@ -213,7 +213,6 @@ class Player:
                 currentX = modX + self.halfHi * math.cos(newRads)
                 currentY = modY + self.halfHi * math.sin(newRads)  
 
-                
             pointsList[rads] = (currentX, currentY)
 
 

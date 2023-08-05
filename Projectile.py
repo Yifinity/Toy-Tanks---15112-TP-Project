@@ -18,7 +18,6 @@ class Projectile:
         self.dX = -5 * (math.cos(self.cAngle))
         self.dY = -5 * (math.sin(self.cAngle))
 
-        
         self.bounceAmount = 0
 
     def drawProjectile(self, app):
