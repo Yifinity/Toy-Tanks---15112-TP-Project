@@ -17,6 +17,7 @@ class ProjectileManager:
                 for object in self.objects:
                     # Check collision of targets
                     check = object.checkHit(projectile)
+                    print(check)
                     if check:
                         projectile.onStep()
                     

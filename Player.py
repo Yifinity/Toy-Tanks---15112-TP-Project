@@ -56,6 +56,7 @@ class Player:
             (self.x + self.halfHi * math.cos(self.hitAngles[7] + self.degrees),
             self.y + self.halfHi * math.sin(self.hitAngles[7] + self.degrees))
         ]
+        print(f'HITPOINT 0: {self.hitPoints[0][0], self.hitPoints[0][1]}, HITPOINT 3: {self.hitPoints[3][0], self.hitPoints[3][1]}')
         
         #Mouse:
         self.mX = app.width // 2
@@ -117,7 +118,7 @@ class Player:
             pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
             drawCircle(pX, pY, self.pR, fill = 'black')
             
-        for point in self.hitPoints:
+        for point in range(len(self.hitPoints)):
             if point == 0 or point == 3:
                 cX, cY = self.hitPoints[point]
                 drawCircle(cX, cY, 5, fill = 'red')
@@ -181,17 +182,18 @@ class Player:
     
     def checkHit(self, projectile):
         if self.degrees % 90 == 0:
-            top, left = self.hitPoints[0][0], self.hitPoints[0][1]
-            bottom, right = self.hitPoints[3][0], self.hitPoints[3][1]
+            left, right  = self.hitPoints[0][0], self.hitPoints[3][0]
+            bottom, top =  self.hitPoints[0][1], self.hitPoints[3][1]
+   
+            print(f'{bottom} <= {projectile.cY} <= {top}')
 
-            if ((left <= projectile.cX <= right)
-                and (bottom <= projectile.cY <= top)):
-                return False
+            if ((bottom <= projectile.cY <= top)
+                 and (left <= projectile.cX <= right)):
+                 return False
             else:
                 return True
         else:
             return True
-
 
 
     def checkBounds(self, newX, newY, newDegrees):
