@@ -152,10 +152,8 @@ class Player:
             newRads = math.radians(newDegrees)
             cornerX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
             cornerY = self.y + self.diag * math.sin(self.cornerAngles[rads] + newRads)
-            
+        
             self.corners[rads] = (cornerX, cornerY)
-
-
         self.degrees = newDegrees
 
     # *Helper have the turret follow the mouse position. 
@@ -169,6 +167,7 @@ class Player:
 
         else:
             self.mVis = True
+
         # Get our degrees using inverse tan
         self.turretDegrees = math.degrees(
                                 math.atan2(self.differenceY, self.differenceX))

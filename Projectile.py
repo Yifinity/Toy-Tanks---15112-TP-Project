@@ -17,6 +17,7 @@ class Projectile:
         # Zero points to left, so flip sign of dX and dY
         self.dX = -5 * (math.cos(self.cAngle))
         self.dY = -5 * (math.sin(self.cAngle))
+
         
         self.bounceAmount = 0
 
@@ -31,22 +32,34 @@ class Projectile:
         
     # Helper to control bound movements
     def checkCollision(self, app):
-        # if we bounce more than 2 times, destroy the projectile
-        # if we're inside bounds
-        if (0 <= self.cX < self.grid.gWidth) and (0 <= self.cY < self.grid.gHeight):
+        # Look three points ahead
+        newX = self.cX + self.dX
+        newY = self.cY + self.dY
+
+        if ((0 <= newX < self.grid.gWidth) and (0 <= newY < self.grid.gHeight)
+             and self.grid.checkPoint(int(newX), int(newY))):
+            
             return True
 
-        # Projectile is outside. 
+        # New position doesn't work. 
         else:
-            self.bounceAmount += 1 # update bounce count
-            if self.bounceAmount < 2: 
-                # Reverse direction
-                if not (0 <= self.cX < self.grid.gWidth):
+            # Reverse what we did to the original point 
+            if self.bounceAmount < 1: 
+                # Check out of bounds
+                if (not 0 <= self.cX < self.grid.gWidth) or self.grid.checkPoint(int(self.cX), int(newY)):
+                    print('x was the problem')
                     self.dX *= -1
                 
-                if not (0 <= self.cY < self.grid.gHeight):
+                elif (not 0 <= self.cY < self.grid.gHeight) or self.grid.checkPoint(int(newX), int(self.cY)):
+                    print('y was the problem')
                     self.dY *= -1
 
+                else:
+                    print('both were problems.....')
+
+                # update bounce count
+                self.bounceAmount += 1 
+                
                 return True
             
             else:
