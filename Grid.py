@@ -50,7 +50,8 @@ class Grid:
 
 
     def redraw(self, app):
-        drawImage(self.background, app.width // 2, app.height // 2, align = 'center') 
+        drawImage(self.background, app.width // 2, app.height // 2,
+                  align = 'center') 
         # drawRect(0, 0, app.width, app.height, fill = rgb(210, 251, 142))
         self.drawDrawGrid(app)
 
