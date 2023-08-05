@@ -10,7 +10,7 @@ from Grid import *
 
 
 def onAppStart(app):
-    # Use 60 sets per second for easy conversion
+    # Use 60 sets per second for easy conversiond
     app.stepsPerSecond = 60
     # Send in our player as our first object 
     app.grid = Grid(app)

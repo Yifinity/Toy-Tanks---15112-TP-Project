@@ -18,31 +18,39 @@ class Player:
         self.borderWidth = 3
         self.border = 'darkBlue'
         
-        # Points on corners of rectangle. 
+        # Points on hitPoints of rectangle. 
         # Diagonal cutting user
         self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
-        # Angles that make up the four corners of the user
-        self.cornerAngles = [
-            math.atan2(-self.width / 2, -self.height / 2), 
-            math.atan2(self.width / 2, -self.height / 2), 
-            math.atan2(-self.width / 2, self.height / 2), 
-            math.atan2(self.width / 2, self.height / 2), 
+
+        self.hitAngles = [
+            math.atan2(-self.height / 2, -self.width / 2), 
+            math.atan2(-self.height / 2, self.width / 2), 
+            math.atan2(self.height / 2, -self.width / 2), 
+            math.atan2(self.height / 2, self.width / 2), 
+            # Add two points at the beginning and end of the rectangle. 
+            0,
+            math.pi,
             ]
 
-        self.corners = [
-            (self.x + self.diag * math.cos(self.cornerAngles[0] + self.degrees),
-             self.y + self.diag * math.sin(self.cornerAngles[0] + self.degrees)),
-            (self.x + self.diag * math.cos(self.cornerAngles[1] + self.degrees),
-             self.y + self.diag * math.sin(self.cornerAngles[1] + self.degrees)),
-            (self.x + self.diag * math.cos(self.cornerAngles[2] + self.degrees),
-             self.y + self.diag * math.sin(self.cornerAngles[2] + self.degrees)),
-            (self.x + self.diag * math.cos(self.cornerAngles[3] + self.degrees),
-             self.y + self.diag * math.sin(self.cornerAngles[3] + self.degrees)),
+        self.hitPoints = [
+            (self.x + self.diag * math.cos(self.hitAngles[0] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[0] + self.degrees)),
+            (self.x + self.diag * math.cos(self.hitAngles[1] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[1] + self.degrees)),
+            (self.x + self.diag * math.cos(self.hitAngles[2] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[2] + self.degrees)),
+            (self.x + self.diag * math.cos(self.hitAngles[3] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[3] + self.degrees)),
+            (self.x + self.diag * math.cos(self.hitAngles[4] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[4] + self.degrees)),
+            (self.x + self.diag * math.cos(self.hitAngles[5] + self.degrees),
+            self.y + self.diag * math.sin(self.hitAngles[5] + self.degrees)),
         ]
         
         #Mouse:
         self.mX = app.width // 2
         self.mY = app.height // 2
+        self.mCol = None
         self.mVis = False # is circle visible. 
         self.mRad = 50
         self.mBorderWidth = 10
@@ -83,14 +91,14 @@ class Player:
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
         
-        drawCircle(self.mX, self.mY, self.mRad, fill = None, border = self.color, 
-                   borderWidth = self.mBorderWidth, visible = self.mVis)
+        drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
+                   visible = self.mVis, border = self.color, 
+                  borderWidth = self.mBorderWidth)
         
-        for (corX, corY) in self.corners:
-            drawCircle(corX, corY, 5, fill = None, border = self.color, 
+        for (corX, corY) in self.hitPoints:
+            drawCircle(corX, corY, 2, fill = None, border = 'red', 
                    borderWidth = 1)
             
-        
         for projectile in self.projectiles:
             projectile.drawProjectile(app)
         
@@ -104,8 +112,11 @@ class Player:
     def mousePress(self, mouseX, mouseY):
         # Limit shots to five at a time. 
         if len(self.projectiles) < 5: 
-            projectileX = self.tubeX - 15 * math.cos(math.radians(self.turretDegrees))
-            projectileY = self.tubeY - 15 * math.sin(math.radians(self.turretDegrees))
+            # Calculate the dX and dY using trigonometry. 
+            trigX =  15 * math.cos(math.radians(self.turretDegrees))
+            trigY = 15 * math.sin(math.radians(self.turretDegrees))
+            projectileX = self.tubeX - trigX
+            projectileY = self.tubeY - trigY
                         
             self.projectiles.append(
                 Projectile(projectileX, projectileY, 
@@ -143,12 +154,11 @@ class Player:
         degQualifies = True
         
         # Verify that these new move requests work and go to default if not
-        # Update our points in our corners. 
-        for rads in range(len(self.cornerAngles)):
+        # Update our points in our hitPoints. 
+        for rads in range(len(self.hitAngles)):
             newRads = math.radians(newDegrees)
-            print(self.cornerAngles[rads])
-            cornerX = int(newX + self.diag * math.cos(self.cornerAngles[rads] + newRads))
-            cornerY = int(newY + self.diag * math.sin(self.cornerAngles[rads] + newRads))
+            cornerX = int(newX + self.diag * math.cos(self.hitAngles[rads] + newRads))
+            cornerY = int(newY + self.diag * math.sin(self.hitAngles[rads] + newRads))
 
             if ((not xQualifies) or (not 0 <= cornerX < self.grid.gWidth)
                  or (not self.grid.checkPoint(cornerX, cornerY))):
@@ -165,13 +175,30 @@ class Player:
         if (yQualifies):
             self.y = newY
         
+        # Update new hitPoints
+        self.updateHitPoints(newDegrees)
         self.degrees = newDegrees
-        for rads in range(len(self.cornerAngles)):
-            newRads = math.radians(newDegrees)
-            currentX = self.x + self.diag * math.cos(self.cornerAngles[rads] + newRads)
-            currentY = self.y + self.diag * math.sin(self.cornerAngles[rads] + newRads)
+ 
 
-            self.corners[rads] = (currentX, currentY)
+    # Goes through all hitpoints, and modifies points as nessisary. 
+    def updateHitPoints(self, degrees):
+        inputRads = math.radians(degrees)
+        for rads in range(len(self.hitAngles)):
+            newRads = self.hitAngles[rads] + inputRads
+            
+            # The last two should have length of the width / 2
+            if rads == 4 or rads == 5:
+                # For the front and back points, we just want half of the width
+                halfWidth = self.width / 2
+                currentX = self.x + halfWidth * math.cos(newRads)
+                currentY = self.y + halfWidth * math.sin(newRads)  
+
+            else:
+                currentX = self.x + self.diag * math.cos(newRads)
+                currentY = self.y + self.diag * math.sin(newRads)        
+
+            self.hitPoints[rads] = (currentX, currentY)
+
 
     # *Helper have the turret follow the mouse position. 
     def followTarget(self):
