@@ -32,7 +32,7 @@ class Player(Tank):
         self.pX = app.width // 2 - (2 * 3 * self.pR)
 
 
-    def redraw(self, app):
+    def redraw(self, app):    
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
                 borderWidth = self.borderWidth, fill = self.color, 
                 align = 'center', rotateAngle = self.degrees)
@@ -44,6 +44,7 @@ class Player(Tank):
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
         
+        # Draw the user aim-target    
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
@@ -53,7 +54,7 @@ class Player(Tank):
             pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
             drawCircle(pX, pY, self.pR, fill = 'black')
             
-            
+
     def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
         self.followTarget()
@@ -109,167 +110,6 @@ class Player(Tank):
         # No matter what direction we go, update the turret to follow
         self.followTarget()
     
-    def checkHit(self, projectile):
-        # Check highest point. 
-        self.idxHighest = self.getHighestPoint()
-        idxLowest = (self.idxHighest + 2) % 4
-        
-        # highest point, rightmost point, lowest Point, leftmost. 
-        self.idxHighestLeading = [
-            self.idxHighest,
-            (self.idxHighest + 1) % 4,
-            idxLowest,
-            (self.idxHighest + 3) % 4,
-        ]
-
-        # Get the x coord of the leftmost and rightmost points. 
-        right = self.hitPoints[self.idxHighestLeading[1]][0]
-        left = self.hitPoints[self.idxHighestLeading[3]][0]
-
-        # The topmost must be the lowest pos
-        top = self.hitPoints[self.idxHighest][1] # Should have lower value
-        bottom = self.hitPoints[idxLowest][1] # Should have higher value
-
-        if ((top <= projectile.cY <= bottom)
-             and (left <= projectile.cX <= right)):
-            if self.degrees % 90 == 0:
-                return False
-            
-            else:
-                if self.checkLines(self.idxHighestLeading, projectile):
-                    return False
-                else:
-                    return True
-                
-        else:
-            return True
-        
-
-    # Return a list of the eqns of all lines of rectangle starting from top. 
-    # A list of a list, where the list's index is the x term and y intercept 
-    def checkLines(self, cornerList, projectile):
-        # Note that we start at the highest point
-        for idx in range(len(cornerList)):
-            # Create a line object that stretches between point 1 and 2
-            point = self.hitPoints[idx]
-            pointX = point[0]
-            pointY = point[1]
-
-            point2 = self.hitPoints[(idx + 1) % 4]
-            point2X = point2[0]
-            point2Y = point2[1]
-
-            highestX = max(pointX, point2X)
-            lowestX = min(pointX, point2X)
-
-            # Remember that higher Y means lower point. 
-            highestY = max(pointY, point2Y)
-            lowestY = min(pointY, point2Y)
-
-            if (projectile.cX, projectile.cY) in cornerList:
-                return False
-
-            # If is in-between the two points
-            if ((lowestX <= projectile.cX <= highestX) 
-                and (lowestY <= projectile.cY <= highestY)):
-                connectingLine = Line(point, point2)
-                
-                # using point slope form of the line, determine if we're in or
-                # out of the block 
-                if connectingLine.evaluatePoint(idx, projectile):
-                    return True
-
-        return False
-    
-
-    # Return the point in the rectangle that has the lowest Y-value, 
-    # Meaning that it's the highest point of the block. 
-    def getHighestPoint(self):
-        # Highest index - start 0 
-        highest = 0
-        # Gets the height of the hitpoint
-        highestVal = self.hitPoints[0][1]
-
-        for pointIdx in range(1, len(self.hitPoints)):
-            # Lower value means higher position. 
-            if self.hitPoints[pointIdx][1] < highestVal:
-                highest = pointIdx
-                highestVal = self.hitPoints[pointIdx][1]
-            
-            # Have the leftmost be the deciding factor for ties
-            elif self.hitPoints[pointIdx][1] == highestVal:
-                leaderLeftVal = self.hitPoints[highest][0]
-                contenderLeftVal = self.hitPoints[pointIdx][0]
-                
-                # Lower value means more lef
-                if leaderLeftVal > contenderLeftVal:
-                    highest = pointIdx
-                    highestVal = self.hitPoints[pointIdx][1]
-        
-        return highest
-
-
-    def checkBounds(self, newX, newY, newDegrees):
-        xQualifies = True
-        yQualifies = True
-        degQualifies = True
-        
-        # Degrees are the most important - so check that first. 
-        degQualifies = self.testNewPoints(self.x, self.y, newDegrees)
-        if degQualifies:
-            # Update the degrees if it passes, so we can now pass that on
-            self.degrees = newDegrees
-        
-        xQualifies = self.testNewPoints(newX, self.y, self.degrees)
-        if xQualifies:
-            self.x = newX
-        
-        yQualifies = self.testNewPoints(self.x, newY, self.degrees)
-        if yQualifies:
-            self.y = newY
-
-        # Update new hitPoints
-        self.updateHitPoints(self.hitPoints, self.x, self.y, self.degrees)
-    
-    def testNewPoints(self, testX, testY, testDegrees):
-        testCopy = copy.deepcopy(self.hitPoints)
-
-        self.updateHitPoints(testCopy, testX, testY, testDegrees)
-        # Test bounds and cell collision - any could return false. 
-        for hitX, hitY in testCopy:
-            hitX = int(hitX)
-            hitY = int(hitY)
-            if ((not 0 <= hitX < self.grid.gWidth)
-                 or (not 0 <= hitY < self.grid.gHeight)
-                 or (not self.grid.checkPoint(hitX, hitY))):
-                 return False
-            
-        return True
-
-
-    # Goes through all hitpoints, and modifies points as nessisary. 
-    def updateHitPoints(self, pointsList, modX, modY, degrees):
-        inputRads = math.radians(degrees)
-        for rads in range(len(self.hitAngles)):
-            newRads = self.hitAngles[rads] + inputRads
-            
-            # The last two should have length of the width / 2
-            if rads < 4:
-                # For the front and back points, we just want half of the width
-                currentX = modX + self.diag * math.cos(newRads)
-                currentY = modY + self.diag * math.sin(newRads)        
-
-            elif rads < 6:
-                currentX = modX + self.halfWid * math.cos(newRads)
-                currentY = modY + self.halfWid * math.sin(newRads)  
-
-            else:
-                currentX = modX + self.halfHi * math.cos(newRads)
-                currentY = modY + self.halfHi * math.sin(newRads)  
-
-            pointsList[rads] = (currentX, currentY)
-
-
     # Have the turret follow the mouse position. 
     def followTarget(self):
         self.differenceX = self.x - self.mX

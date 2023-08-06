@@ -110,8 +110,7 @@ class Tank:
         pass
     
     def onStep(self, app):
-        self.stepCounts += 1
-        self.timeInSecs = self.stepCounts / 60
+        pass
     
     def mousePress(self, mouseX, mouseY):
         pass
