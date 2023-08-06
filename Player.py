@@ -4,7 +4,12 @@ class Player(Tank):
     def __init__(self, app):
         super().__init__()
         
+        self.projectileManager = app.projectileManager
+
         # Tank:
+        self.degrees = 0
+        self.x = app.width // 2
+        self.y = app.height // 2
         self.color = rgb(6, 6, 193)
         self.border = 'darkBlue'
 
@@ -76,11 +81,12 @@ class Player(Tank):
             trigY = 15 * math.sin(math.radians(self.turretDegrees))
             projectileX = self.tubeX - trigX
             projectileY = self.tubeY - trigY
+
+            self.projectileManager.addMissile(
+                Projectile(app, projectileX, projectileY, 
+                            math.radians(self.turretDegrees)))
             
-            self.projectileManager.projectiles.append(
-                Projectile(projectileX, projectileY, 
-                            math.radians(self.turretDegrees), self.grid))
-    
+
             self.availableProjectiles -= 1
             self.stepCounts = 0  
             

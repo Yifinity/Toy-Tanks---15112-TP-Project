@@ -4,9 +4,9 @@ import math
 # from Player import *
 
 class Projectile:
-    def __init__(self, cX, cY, cAngle, grid):
+    def __init__(self, app, cX, cY, cAngle):
         # get our grid to verify bounds. 
-        self.grid = grid
+        self.grid = app.grid
 
         self.cX = cX
         self.cY = cY

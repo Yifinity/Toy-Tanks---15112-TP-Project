@@ -18,6 +18,7 @@ def onAppStart(app):
     app.objects = []
     app.projectileManager = ProjectileManager(app)
     app.objects.append(Player(app))
+    app.objects.append(Tank())
 
 
 def redrawAll(app):
@@ -41,7 +42,6 @@ def onMouseMove(app, mouseX, mouseY):
     # We just want the player
     for object in app.objects:
         object.mouseMove(mouseX, mouseY)
-
 
 def onKeyPress(app, key):
     pass

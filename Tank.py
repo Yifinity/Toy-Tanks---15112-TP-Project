@@ -10,15 +10,14 @@ class Tank:
     def __init__(self):
         # Objects that we take the alias of from app 
         self.grid = app.grid
-        self.projectileManager = app.projectileManager
 
         # Tank:
         self.degrees = 0
         self.width = 35
         self.height = 30
 
-        self.x = app.width / 2
-        self.y = app.height / 2
+        self.x = 200
+        self.y = 500
         self.borderWidth = 3
 
         # Change in angle while tank moves
@@ -111,7 +110,7 @@ class Tank:
     
     def onStep(self, app):
         pass
-    
+
     def mousePress(self, mouseX, mouseY):
         pass
             
