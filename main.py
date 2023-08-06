@@ -17,16 +17,15 @@ def onAppStart(app):
     app.grid = Grid(app)
     app.objects = []
     app.projectileManager = ProjectileManager(app)
-
     app.objects.append(Player(app))
-    
+
+
 def redrawAll(app):
     app.grid.redraw(app)
     app.projectileManager.redraw(app)
     for object in app.objects:
         object.redraw(app)
     
-
 
 def onStep(app):
     app.projectileManager.onStep(app)

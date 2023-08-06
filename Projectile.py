@@ -39,15 +39,15 @@ class Projectile:
              and self.grid.checkPoint(int(newX), int(newY))):
             return True
 
-        # New position doesn't work. 
-        else:
-            # Reverse what we did to the original point 
+        
+        else: # New position doesn't work. 
             if self.bounceAmount < 1: 
-                # Check out of bounds
+                # Check whehter it's x or y that's the problem
                 if ((not 0 <= self.cX < self.grid.gWidth) 
                      or self.grid.checkPoint(int(self.cX), int(newY))):
                     self.dX *= -1
                 
+                # run this as an if later
                 elif ((not 0 <= self.cY < self.grid.gHeight)
                       or self.grid.checkPoint(int(newX), int(self.cY))):
                     self.dY *= -1
