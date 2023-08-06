@@ -1,66 +1,12 @@
-from cmu_graphics import *
-from Projectile import *
-from Line import *
-import math
-import copy
+from Tank import *
 
-class Player:
+class Player(Tank):
     def __init__(self, app):
-        # Objects that we take the alias of from app 
-        self.grid = app.grid
-        self.projectileManager = app.projectileManager
-
-        # Tank:
-        self.degrees = 0
-        self.width = 35
-        self.height = 30
-        self.color = rgb(6, 6, 193)
-        self.x = app.width / 2
-        self.y = app.height / 2
-        self.borderWidth = 3
-        self.border = 'darkBlue'
+        super().__init__()
         
-        # HitPoints of rectangle. 
-        # Diagonal cutting user
-        self.diag = ((self.width / 2) ** 2 + (self.height / 2) ** 2) ** 0.5
-        # For the side hitpoints, we just need half of the width or height. 
-        self.halfWid = self.width / 2
-        self.halfHi = self.height / 2
-
-        # Note that the first four are ordered in a rotation 
-        # Top, Right, Bottom, Left
-        self.hitAngles = [
-            math.atan2(-self.height / 2, -self.width / 2), 
-            math.atan2(-self.height / 2, self.width / 2), 
-            math.atan2(self.height / 2, self.width / 2), 
-            math.atan2(self.height / 2, -self.width / 2), 
-            # Points that do not need the diagonal for points. 
-            0,
-            math.pi,
-            math.pi / 2,
-            -math.pi / 2
-            ]
-
-        self.hitPoints = [
-            (self.x + self.diag * math.cos(self.hitAngles[0] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[0] + self.degrees)),
-            (self.x + self.diag * math.cos(self.hitAngles[1] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[1] + self.degrees)),
-            (self.x + self.diag * math.cos(self.hitAngles[2] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[2] + self.degrees)),
-            (self.x + self.diag * math.cos(self.hitAngles[3] + self.degrees),
-            self.y + self.diag * math.sin(self.hitAngles[3] + self.degrees)),
-            (self.x + self.halfWid * math.cos(self.hitAngles[4] + self.degrees),
-            self.y + self.halfWid * math.sin(self.hitAngles[4] + self.degrees)),
-            (self.x + self.halfWid * math.cos(self.hitAngles[5] + self.degrees),
-            self.y + self.halfWid * math.sin(self.hitAngles[5] + self.degrees)),
-            (self.x + self.halfHi * math.cos(self.hitAngles[6] + self.degrees),
-            self.y + self.halfHi * math.sin(self.hitAngles[6] + self.degrees)),
-            (self.x + self.halfHi * math.cos(self.hitAngles[7] + self.degrees),
-            self.y + self.halfHi * math.sin(self.hitAngles[7] + self.degrees))
-        ]
-
-        self.idxHighest = 0
+        # Tank:
+        self.color = rgb(6, 6, 193)
+        self.border = 'darkBlue'
 
         #Mouse:
         self.mX = app.width // 2
@@ -75,33 +21,15 @@ class Player:
         self.differenceY = self.y - self.mY 
         self.turretDegrees = math.degrees(
                                 math.atan2(self.differenceY, self.differenceX))
+        
         self.tubeColor = rgb(75, 75, 255)
         self.tubeBorder = 'black'
-        self.baseSize = 8
-        self.capRad = 10
-
-        # Tube - end of turret
-        self.tubeLength = 30
-        # distance between the center of the tube and the tank. 
-        self.tubeDistance = (self.baseSize + self.tubeLength) // 2
-        self.tubeX = self.x - self.tubeDistance * math.cos(self.turretDegrees)
-        self.tubeY = self.y - self.tubeDistance * math.sin(self.turretDegrees)
-        self.tubeDegree = 0
-        # Change in angle
-        self.dAngle = 3
-
+        
         #Projectiles
         self.availableProjectiles = 5
         self.pY = 565
         self.pR = 10
         self.pX = app.width // 2 - (2 * 3 * self.pR)
-
-        #Timer Constants
-        self.stepCounts = 0
-        self.timeInSecs = 0
-
-        # debug
-        self.idxHighestLeading = [0, 1, 2, 3]
 
 
     def redraw(self, app):
