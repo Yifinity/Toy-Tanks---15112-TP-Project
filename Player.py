@@ -1,5 +1,6 @@
 from cmu_graphics import *
 from Projectile import *
+from Line import *
 import math
 import copy
 
@@ -26,11 +27,13 @@ class Player:
         self.halfWid = self.width / 2
         self.halfHi = self.height / 2
 
+        # Note that the first four are ordered in a rotation 
+        # Top, Right, Bottom, Left
         self.hitAngles = [
             math.atan2(-self.height / 2, -self.width / 2), 
             math.atan2(-self.height / 2, self.width / 2), 
-            math.atan2(self.height / 2, -self.width / 2), 
             math.atan2(self.height / 2, self.width / 2), 
+            math.atan2(self.height / 2, -self.width / 2), 
             # Points that do not need the diagonal for points. 
             0,
             math.pi,
@@ -56,8 +59,9 @@ class Player:
             (self.x + self.halfHi * math.cos(self.hitAngles[7] + self.degrees),
             self.y + self.halfHi * math.sin(self.hitAngles[7] + self.degrees))
         ]
-        print(f'HITPOINT 0: {self.hitPoints[0][0], self.hitPoints[0][1]}, HITPOINT 3: {self.hitPoints[3][0], self.hitPoints[3][1]}')
-        
+
+        self.idxHighest = 0
+
         #Mouse:
         self.mX = app.width // 2
         self.mY = app.height // 2
@@ -96,6 +100,9 @@ class Player:
         self.stepCounts = 0
         self.timeInSecs = 0
 
+        # debug
+        self.idxHighestLeading = [0, 1, 2, 3]
+
 
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
@@ -118,18 +125,12 @@ class Player:
             pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
             drawCircle(pX, pY, self.pR, fill = 'black')
             
-        for point in range(len(self.hitPoints)):
-            if point == 0 or point == 3:
-                cX, cY = self.hitPoints[point]
-                drawCircle(cX, cY, 5, fill = 'red')
             
-
     def mouseMove(self, mouseX, mouseY):     
         self.mX, self.mY = mouseX, mouseY
         self.followTarget()
     
     def onStep(self, app):
-        # print(self.degrees)
         self.stepCounts += 1
         self.timeInSecs = self.stepCounts / 60
         
@@ -181,19 +182,103 @@ class Player:
         self.followTarget()
     
     def checkHit(self, projectile):
-        if self.degrees % 90 == 0:
-            left, right  = self.hitPoints[0][0], self.hitPoints[3][0]
-            bottom, top =  self.hitPoints[0][1], self.hitPoints[3][1]
-   
-            print(f'{bottom} <= {projectile.cY} <= {top}')
+        # Check highest point. 
+        self.idxHighest = self.getHighestPoint()
+        idxLowest = (self.idxHighest + 2) % 4
+        
+        # highest point, rightmost point, lowest Point, leftmost. 
+        self.idxHighestLeading = [
+            self.idxHighest,
+            (self.idxHighest + 1) % 4,
+            idxLowest,
+            (self.idxHighest + 3) % 4,
+        ]
 
-            if ((bottom <= projectile.cY <= top)
-                 and (left <= projectile.cX <= right)):
-                 return False
+        # Get the x coord of the leftmost and rightmost points. 
+        right = self.hitPoints[self.idxHighestLeading[1]][0]
+        left = self.hitPoints[self.idxHighestLeading[3]][0]
+
+        # The topmost must be the lowest pos
+        top = self.hitPoints[self.idxHighest][1] # Should have lower value
+        bottom = self.hitPoints[idxLowest][1] # Should have higher value
+
+        if ((top <= projectile.cY <= bottom)
+             and (left <= projectile.cX <= right)):
+            if self.degrees % 90 == 0:
+                return False
+            
             else:
-                return True
+                if self.checkLines(self.idxHighestLeading, projectile):
+                    return False
+                else:
+                    return True
+                
         else:
             return True
+        
+
+    # Return a list of the eqns of all lines of rectangle starting from top. 
+    # A list of a list, where the list's index is the x term and y intercept 
+    def checkLines(self, cornerList, projectile):
+        # Note that we start at the highest point
+        for idx in range(len(cornerList)):
+            # Create a line object that stretches between point 1 and 2
+            point = self.hitPoints[idx]
+            pointX = point[0]
+            pointY = point[1]
+
+            point2 = self.hitPoints[(idx + 1) % 4]
+            point2X = point2[0]
+            point2Y = point2[1]
+
+            highestX = max(pointX, point2X)
+            lowestX = min(pointX, point2X)
+
+            # Remember that higher Y means lower point. 
+            highestY = max(pointY, point2Y)
+            lowestY = min(pointY, point2Y)
+
+            if (projectile.cX, projectile.cY) in cornerList:
+                return False
+
+            # If is in-between the two points
+            if ((lowestX <= projectile.cX <= highestX) 
+                and (lowestY <= projectile.cY <= highestY)):
+                connectingLine = Line(point, point2)
+                
+                # using point slope form of the line, determine if we're in or
+                # out of the block 
+                if connectingLine.evaluatePoint(idx, projectile):
+                    return True
+
+        return False
+    
+
+    # Return the point in the rectangle that has the lowest Y-value, 
+    # Meaning that it's the highest point of the block. 
+    def getHighestPoint(self):
+        # Highest index - start 0 
+        highest = 0
+        # Gets the height of the hitpoint
+        highestVal = self.hitPoints[0][1]
+
+        for pointIdx in range(1, len(self.hitPoints)):
+            # Lower value means higher position. 
+            if self.hitPoints[pointIdx][1] < highestVal:
+                highest = pointIdx
+                highestVal = self.hitPoints[pointIdx][1]
+            
+            # Have the leftmost be the deciding factor for ties
+            elif self.hitPoints[pointIdx][1] == highestVal:
+                leaderLeftVal = self.hitPoints[highest][0]
+                contenderLeftVal = self.hitPoints[pointIdx][0]
+                
+                # Lower value means more lef
+                if leaderLeftVal > contenderLeftVal:
+                    highest = pointIdx
+                    highestVal = self.hitPoints[pointIdx][1]
+        
+        return highest
 
 
     def checkBounds(self, newX, newY, newDegrees):
@@ -257,7 +342,7 @@ class Player:
             pointsList[rads] = (currentX, currentY)
 
 
-    # *Helper have the turret follow the mouse position. 
+    # Have the turret follow the mouse position. 
     def followTarget(self):
         self.differenceX = self.x - self.mX
         self.differenceY = self.y - self.mY 
