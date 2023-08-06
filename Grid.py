@@ -3,7 +3,6 @@ from cmu_graphics import *
 from PIL import Image
 import random
 
-
 class Grid:
     def __init__(self, app):
         self.margin = 20
@@ -11,20 +10,22 @@ class Grid:
         self.gTop = 0
         self.gWidth = app.width
 
-        # Red ribbon starts around 533 pxls
-        self.gHeight = app.height - 67 
+        # Red ribbon starts around 530 pxls
+        self.gHeight = app.height - 72 
 
-        self.rows = 20
-        self.cols = 16
+        # CELL HEIGHT/WIDTH should be 33 HIGH * 40 WIDE
+        self.rows = 16
+        self.cols = 20
 
-        self.cWidth = self.gWidth // self.rows
-        self.cHeight = self.gHeight // self.cols
+        self.cWidth = self.gWidth // self.cols
+        self.cHeight = self.gHeight // self.rows
 
         # Edited Wood Photo from Free Stock photos by Vecteezy 
         # Inspired from Basic PIL Methods. 
         # "https://www.vecteezy.com/free-photos"
         self.background = CMUImage(Image.open('Images\Background.png'))
 
+        self.passThrough = (0, 0) 
 
         # Grid map inspired from Wii Tanks' map on Mission 8
         #https://tanks.brightsoo.com/missions/
@@ -33,14 +34,14 @@ class Grid:
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
             [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
             [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -48,9 +49,9 @@ class Grid:
         ]
 
 
-
     def redraw(self, app):
-        drawImage(self.background, app.width // 2, app.height // 2, align = 'center') 
+        drawImage(self.background, app.width // 2, app.height // 2,
+                  align = 'center') 
         # drawRect(0, 0, app.width, app.height, fill = rgb(210, 251, 142))
         self.drawDrawGrid(app)
 
@@ -61,14 +62,25 @@ class Grid:
             for col in range(len(self.gridMap[row])):
                 cellTop = self.gTop + (self.cHeight * row)
                 cellLeft = self.gLeft + (self.cWidth * col)
-            
+                cCol = rgb(242, 225, 185)
+                cBorder = rgb(205, 179, 119)
 
                 if self.gridMap[row][col] == 1:
-                    cCol = rgb(242, 225, 185)
-                    cBorder = rgb(205, 179, 119)
                     drawRect(cellLeft, cellTop, self.cWidth, self.cHeight,
                               fill = cCol, border = cBorder, borderWidth = 5)
+        
+    # Check if a point crosses any of the obstacles. 
+    def checkPoint(self, pointX, pointY):
+        # Edge Case: if the values pass the width or the height
+        if (not 0 <= pointX < self.gWidth) or (not 0 <= pointY < self.gHeight):
+            return False
 
-                    # image = self.blocks[0]
-                    # drawImage(image, cellLeft, cellTop, border = borderCol,
-                    #           width = self.cWidth, height = self.cHeight)
+        # get the row / column of the where pointX, pointY is. 
+        col = (pointX // self.cWidth)
+        row = (pointY // self.cHeight)
+        location = self.gridMap[row][col]
+        
+        if location == 1: 
+            return False
+        else:
+            return True
