@@ -25,11 +25,26 @@ def restartApp(app):
     app.projectileManager = ProjectileManager(app)
     app.user = Player(app.width // 2, app.height // 2)
     app.objects.append(app.user)
+    app.enemyCoords = [
+        app.grid.rowColToXY(2, 2),
+        app.grid.rowColToXY(12, 2),
+        app.grid.rowColToXY(7, 2),
+
+        app.grid.rowColToXY(2, 17),
+        app.grid.rowColToXY(12, 17),
+        app.grid.rowColToXY(7, 17),
+    ]
+    
+    app.objects.append(YellowEnemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
+    app.objects.append(YellowEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
+    app.objects.append(Enemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
+
+    app.objects.append(YellowEnemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
+    app.objects.append(Enemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
+    app.objects.append(YellowEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
 
 
-    app.objects.append(YellowEnemy(app.grid.rowColToXY(2, 1)))
-    app.objects.append(Enemy(600, 500))
-    app.objects.append(Enemy(100, 100))
+
 
 
 def redrawAll(app):

@@ -8,15 +8,15 @@ class Enemy(Tank):
 
         # Default that I may change. 
         self.availableProjectiles = 5
-        self.color = 'seaGreen'
-        self.border = 'darkGreen'
+        self.color = 'white'
+        self.border = 'grey'
 
         self.differenceX = 0
         self.differenceY = 0
         self.turretDegrees = 0
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 3
+        self.fireFrequency = 5
         self.count = 0
 
 
