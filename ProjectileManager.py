@@ -9,29 +9,31 @@ class ProjectileManager:
         # Other classes will add to this list
         self.projectiles = []
 
+
+    def addMissile(self, missile):
+        self.projectiles.append(missile)
+
     def onStep(self, app):
         # First check that it's not empty
-        for projectile in self.projectiles:    
-            for object in self.objects:
+        for projectile in self.projectiles: 
+            if projectile.checkCollision(app): 
+                for object in self.objects:
                     # Check collision of targets
                     check = object.checkHit(projectile)
                     
                     if check: # if we haven't hit an enemy
                         # Check if we hit grid/or out of bounds
-                        if projectile.checkCollision(app): 
-                            projectile.onStep()
-                        
-                        else:
-                            # If we fail the grid-boundary test
-                            self.projectiles.remove(projectile)
+                        projectile.onStep()
                     
                     else:
-                        # if we hit an object
-                        object.color = 'red'
                         self.objects.remove(object)
                         self.projectiles.remove(projectile)
+                        return
+            else:
+                # If we fail the grid-boundary test
+                self.projectiles.remove(projectile)
+                return
 
-   
 
     def redraw(self, app):
         for projectile in self.projectiles:

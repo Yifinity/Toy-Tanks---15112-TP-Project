@@ -17,6 +17,16 @@ class Line:
         self.slope = dY / dX
         self.yIntercept = self.point1Y - (self.slope * self.point1X)
 
+        self.points = []
+
+        leftmostPoint = min(self.point1X, self.point2X)
+        rightmostPoint = max(self.point1X, self.point2X)
+
+        # Add every point on the line to self.points
+        for xVal in range(int(leftmostPoint), int(rightmostPoint)):
+            yVal = (self.slope * xVal) + self.yIntercept
+            self.points.append((xVal, yVal))
+
     def evaluatePoint(self, startIdx, projectile):
         # using our good fashioned y = mx + b
         evaluatedY = (self.slope * projectile.cX) + self.yIntercept
