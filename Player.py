@@ -2,14 +2,10 @@ from Tank import *
 
 class Player(Tank):
     def __init__(self, app):
-        super().__init__()
+        super().__init__(app.width // 2, app.height // 2)
         
-        self.projectileManager = app.projectileManager
-
         # Tank:
         self.degrees = 0
-        self.x = app.width // 2
-        self.y = app.height // 2
         self.color = rgb(6, 6, 193)
         self.border = 'darkBlue'
 
@@ -24,8 +20,7 @@ class Player(Tank):
         # Turret:
         self.differenceX = self.x - self.mX
         self.differenceY = self.y - self.mY 
-        self.turretDegrees = math.degrees(
-                                math.atan2(self.differenceY, self.differenceX))
+        self.turretDegrees = 0
         
         self.tubeColor = rgb(75, 75, 255)
         self.tubeBorder = 'black'
@@ -35,6 +30,8 @@ class Player(Tank):
         self.pY = 565
         self.pR = 10
         self.pX = app.width // 2 - (2 * 3 * self.pR)
+
+        print("Player - points", self.hitPoints)
 
     def __repr__(self):
         return 'User'
@@ -133,6 +130,7 @@ class Player(Tank):
         # Get our degrees using inverse tan
         self.turretDegrees = math.degrees(
                                 math.atan2(self.differenceY, self.differenceX))
+        
         # Degrees needed for trigonometry
         trigDegrees = math.radians(self.turretDegrees)
         self.tubeX = self.x - self.tubeDistance * math.cos(trigDegrees)

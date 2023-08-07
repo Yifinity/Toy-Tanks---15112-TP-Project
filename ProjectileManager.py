@@ -20,7 +20,6 @@ class ProjectileManager:
                 for object in self.objects:
                     # Check collision of targets
                     check = object.checkHit(projectile)
-                    print(f'{object} test: {check}')
                     
                     if check: # if we haven't hit an enemy
                         # Check if we hit grid/or out of bounds
@@ -28,7 +27,6 @@ class ProjectileManager:
                     
                     else:
                         self.objects.remove(object)
-                        print(f'{object} has been destroyed')
                         self.projectiles.remove(projectile)
                         return
             else:

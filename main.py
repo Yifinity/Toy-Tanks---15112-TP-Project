@@ -17,8 +17,9 @@ def onAppStart(app):
     app.grid = Grid(app)
     app.objects = []
     app.projectileManager = ProjectileManager(app)
+
     app.objects.append(Player(app))
-    app.objects.append(Tank())
+    app.objects.append(Tank(200, 500))
 
 
 def redrawAll(app):

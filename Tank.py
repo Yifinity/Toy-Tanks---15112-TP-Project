@@ -7,17 +7,17 @@ import math
 import copy
 
 class Tank:
-    def __init__(self):
+    def __init__(self, x, y):
         # Objects that we take the alias of from app 
         self.grid = app.grid
-
+        self.projectileManager = app.projectileManager
         # Tank:
         self.degrees = 0
         self.width = 35
         self.height = 30
 
-        self.x = 200
-        self.y = 500
+        self.x = x
+        self.y = y
         self.borderWidth = 3
 
         # Change in angle while tank moves
@@ -90,6 +90,8 @@ class Tank:
         #Timer Constants
         self.stepCounts = 0
         self.timeInSecs = 0
+
+        print("tank - points", self.hitPoints)
 
     def __repr__(self):
         return 'Default Tank'
