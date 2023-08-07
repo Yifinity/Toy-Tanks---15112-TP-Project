@@ -23,19 +23,7 @@ class Enemy(Tank):
 
     def onStep(self, app):
         self.targetUser() 
-
-    def redraw(self, app):
-        drawRect(self.x, self.y, self.width, self.height, border = self.border,
-                borderWidth = self.borderWidth, fill = self.color, 
-                align = 'center', rotateAngle = self.degrees)
-        
-        drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
-                 align = 'center', rotateAngle = self.turretDegrees,
-                 fill = self.tubeColor, border = self.tubeBorder)
-        
-        drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
-                   border = self.tubeBorder)
-                            
+                          
 
     def targetUser(self):
         # user will always be the first object in objects
