@@ -16,11 +16,8 @@ class Projectile:
         # print(f'Projectile (degrees): {self.cAngle}', end = ' | ')
         # Change in dX and dY
         # Zero points to left, so flip sign of dX and dY
-        self.dX = -5 * (math.cos(self.cAngle))
-        self.dY = -5 * (math.sin(self.cAngle))
-
-        # print(f'(dX, dY): {self.dX, self.dY}', end = ' | ')
-        # print(f'HYP: {total}')
+        self.dX = -2.5 * (math.cos(self.cAngle))
+        self.dY = -2.5 * (math.sin(self.cAngle))
 
         self.bounceAmount = 0
 
