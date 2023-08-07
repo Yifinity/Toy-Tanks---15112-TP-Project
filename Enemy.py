@@ -27,8 +27,6 @@ class Enemy(Tank):
         # Check if we still have our user. 
         if app.user not in self.objects: return
         user = self.objects[0]
-        self.tX = user.x
-        self.tY = user.y
 
         self.differenceX = self.x - user.x
         self.differenceY = self.y - user.y
@@ -56,8 +54,6 @@ class Enemy(Tank):
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))
                 
-
-            
             else: # update our time to fire. 
                 self.count += 1
                 self.timeInSecs = self.count // 60 

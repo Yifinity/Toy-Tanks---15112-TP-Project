@@ -7,6 +7,7 @@
 from Player import *
 from Enemy import *
 from YellowEnemy import *
+from GreenEnemy import *
 from Projectile import * 
 from ProjectileManager import *
 from Grid import *
@@ -26,22 +27,22 @@ def restartApp(app):
     app.user = Player(app.width // 2, app.height // 2)
     app.objects.append(app.user)
     app.enemyCoords = [
-        app.grid.rowColToXY(2, 2),
-        app.grid.rowColToXY(12, 2),
-        app.grid.rowColToXY(7, 2),
+        app.grid.rowColToXY(2, 3),
+        app.grid.rowColToXY(14, 3),
+
+        app.grid.rowColToXY(2, 10),
+        app.grid.rowColToXY(14, 10),
 
         app.grid.rowColToXY(2, 17),
-        app.grid.rowColToXY(12, 17),
-        app.grid.rowColToXY(7, 17),
+        app.grid.rowColToXY(14, 17)
     ]
     
     app.objects.append(YellowEnemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
-    app.objects.append(YellowEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
+    app.objects.append(GreenEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
     app.objects.append(Enemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
 
     app.objects.append(YellowEnemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
-    app.objects.append(Enemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
-    app.objects.append(YellowEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
+    app.objects.append(GreenEnemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
 
 
 
