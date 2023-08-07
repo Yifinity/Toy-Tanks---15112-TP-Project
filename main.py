@@ -5,6 +5,7 @@
 * Date: 10 August 2023
 '''
 from Player import *
+from Enemy import *
 from Projectile import * 
 from ProjectileManager import *
 from Grid import *
@@ -17,9 +18,13 @@ def onAppStart(app):
     app.grid = Grid(app)
     app.objects = []
     app.projectileManager = ProjectileManager(app)
-
     app.objects.append(Player(app.width // 2, app.height // 2))
-    app.objects.append(Tank(200, 500))
+    restartApp(app)
+
+def restartApp(app):
+    app.objects.append(Enemy(200, 500))
+    app.objects.append(Enemy(600, 500))
+    app.objects.append(Enemy(100, 100))
 
 
 def redrawAll(app):
@@ -51,7 +56,6 @@ def onKeyHold(app, keys):
     for object in app.objects:
         object.keyHold(keys)
     
-
 def main():
     runApp(width = 800, height = 600)
 

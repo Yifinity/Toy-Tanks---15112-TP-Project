@@ -79,6 +79,7 @@ class Grid:
         row = (pointY // self.cHeight)
         location = self.gridMap[row][col]
         
+        # If there's a block, return false
         if location == 1: 
             return False
         else:

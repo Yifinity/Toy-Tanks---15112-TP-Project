@@ -11,6 +11,7 @@ class Tank:
         # Objects that we take the alias of from app 
         self.grid = app.grid
         self.projectileManager = app.projectileManager
+        self.objects = self.projectileManager.objects
         # Tank:
         self.degrees = 0
         self.width = 35
@@ -101,6 +102,7 @@ class Tank:
                 borderWidth = self.borderWidth, fill = self.color, 
                 align = 'center', rotateAngle = self.degrees)
         
+
         drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
                  align = 'center', rotateAngle = self.turretDegrees,
                  fill = self.tubeColor, border = self.tubeBorder)

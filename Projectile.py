@@ -19,7 +19,6 @@ class Projectile:
         self.dX = -5 * (math.cos(self.cAngle))
         self.dY = -5 * (math.sin(self.cAngle))
 
-        total = (((self.dX) ** 2) + ((self.dY) ** 2)) ** 0.5
         # print(f'(dX, dY): {self.dX, self.dY}', end = ' | ')
         # print(f'HYP: {total}')
 
