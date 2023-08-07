@@ -15,11 +15,6 @@ class Enemy(Tank):
         self.differenceY = 0
         self.turretDegrees = 0
 
-        # Debug
-        self.tX = 0
-        self.tY = 0
-        self.distance = 0
-        self.pointCirs = []
 
     def onStep(self, app):
         self.targetUser() 
@@ -43,6 +38,8 @@ class Enemy(Tank):
             
             # Turn it to degrees for the turret to rotate. 
             self.turretDegrees = math.degrees(turretRads)
+
+
 
     # Check if the turret's view is blocked by a wall. 
     def notBlocked(self, user):
