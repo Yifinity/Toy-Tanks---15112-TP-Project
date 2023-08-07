@@ -14,6 +14,7 @@ class Line:
         dX = self.point2X - self.point1X
         dY = self.point2Y - self.point1Y
 
+        # Find edge cases for horizontal and vertical lines. 
         self.slope = dY / dX
         self.yIntercept = self.point1Y - (self.slope * self.point1X)
 

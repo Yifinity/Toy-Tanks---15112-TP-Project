@@ -15,14 +15,17 @@ class Enemy(Tank):
         self.differenceY = 0
         self.turretDegrees = 0
 
+        # Fire frequency = seconds per shot. 
+        self.fireFrequency = 3
+        self.count = 0
+
 
     def onStep(self, app):
-        self.targetUser() 
-                          
+        self.targetUser()                          
 
     def targetUser(self):
-        # user will always be the first object in objects
-        # Point at the user
+        # Check if we still have our user. 
+        if app.user not in self.objects: return
         user = self.objects[0]
         self.tX = user.x
         self.tY = user.y
@@ -38,6 +41,28 @@ class Enemy(Tank):
             
             # Turn it to degrees for the turret to rotate. 
             self.turretDegrees = math.degrees(turretRads)
+
+            # Check if it's time to fire. 
+            if self.timeInSecs >= self.fireFrequency:
+                trigX = self.halfTube * math.cos(math.radians(self.turretDegrees))
+                trigY = self.halfTube * math.sin(math.radians(self.turretDegrees))
+                projectileX = self.tubeX - trigX
+                projectileY = self.tubeY - trigY
+
+                self.count = 0
+                self.timeInSecs = 0
+
+                self.projectileManager.addMissile(
+                    Projectile(projectileX, projectileY, 
+                                math.radians(self.turretDegrees)))
+                
+
+            
+            else: # update our time to fire. 
+                self.count += 1
+                self.timeInSecs = self.count // 60 
+                
+
 
 
 

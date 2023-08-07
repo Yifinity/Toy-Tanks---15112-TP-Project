@@ -82,6 +82,7 @@ class Tank:
 
         # Tube - end of turret
         self.tubeLength = 30
+        self.halfTube = 15
         # distance between the center of the tube and the tank. 
         self.tubeDistance = (self.baseSize + self.tubeLength) // 2
         self.tubeX = self.x - self.tubeDistance * math.cos(self.turretDegrees)
