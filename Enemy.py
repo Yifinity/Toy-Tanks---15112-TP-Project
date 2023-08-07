@@ -62,10 +62,6 @@ class Enemy(Tank):
                 self.count += 1
                 self.timeInSecs = self.count // 60 
                 
-
-
-
-
     # Check if the turret's view is blocked by a wall. 
     def notBlocked(self, user):
         # Create a line of fire from the enemy to the user 
