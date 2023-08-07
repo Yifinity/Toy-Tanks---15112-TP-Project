@@ -4,7 +4,7 @@ import math
 # from Player import *
 
 class Projectile:
-    def __init__(self, app, cX, cY, cAngle):
+    def __init__(self, cX, cY, cAngle):
         # get our grid to verify bounds. 
         self.grid = app.grid
 
@@ -13,10 +13,15 @@ class Projectile:
         self.cAngle = cAngle # Face in right direction
         self.cRadius = 4 # tank's barrel is 8 pxls
 
+        # print(f'Projectile (degrees): {self.cAngle}', end = ' | ')
         # Change in dX and dY
         # Zero points to left, so flip sign of dX and dY
         self.dX = -5 * (math.cos(self.cAngle))
         self.dY = -5 * (math.sin(self.cAngle))
+
+        total = (((self.dX) ** 2) + ((self.dY) ** 2)) ** 0.5
+        # print(f'(dX, dY): {self.dX, self.dY}', end = ' | ')
+        # print(f'HYP: {total}')
 
         self.bounceAmount = 0
 

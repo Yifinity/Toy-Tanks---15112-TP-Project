@@ -1,8 +1,8 @@
 from Tank import *
 
 class Player(Tank):
-    def __init__(self, app):
-        super().__init__(app.width // 2, app.height // 2)
+    def __init__(self, x, y):
+        super().__init__(x, y)
         
         # Tank:
         self.degrees = 0
@@ -82,7 +82,7 @@ class Player(Tank):
             projectileY = self.tubeY - trigY
 
             self.projectileManager.addMissile(
-                Projectile(app, projectileX, projectileY, 
+                Projectile(projectileX, projectileY, 
                             math.radians(self.turretDegrees)))
             
 

@@ -91,7 +91,6 @@ class Tank:
         self.stepCounts = 0
         self.timeInSecs = 0
 
-        print("tank - points", self.hitPoints)
 
     def __repr__(self):
         return 'Default Tank'

@@ -18,7 +18,7 @@ def onAppStart(app):
     app.objects = []
     app.projectileManager = ProjectileManager(app)
 
-    app.objects.append(Player(app))
+    app.objects.append(Player(app.width // 2, app.height // 2))
     app.objects.append(Tank(200, 500))
 
 
