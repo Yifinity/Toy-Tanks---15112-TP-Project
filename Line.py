@@ -14,8 +14,19 @@ class Line:
         dX = self.point2X - self.point1X
         dY = self.point2Y - self.point1Y
 
+        # Find edge cases for horizontal and vertical lines. 
         self.slope = dY / dX
         self.yIntercept = self.point1Y - (self.slope * self.point1X)
+
+        self.points = []
+
+        leftmostPoint = min(self.point1X, self.point2X)
+        rightmostPoint = max(self.point1X, self.point2X)
+
+        # Add every point on the line to self.points
+        for xVal in range(int(leftmostPoint), int(rightmostPoint)):
+            yVal = (self.slope * xVal) + self.yIntercept
+            self.points.append((xVal, yVal))
 
     def evaluatePoint(self, startIdx, projectile):
         # using our good fashioned y = mx + b
