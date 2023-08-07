@@ -26,7 +26,8 @@ def restartApp(app):
     app.user = Player(app.width // 2, app.height // 2)
     app.objects.append(app.user)
 
-    app.objects.append(Enemy(200, 500))
+
+    app.objects.append(YellowEnemy(app.grid.rowColToXY(2, 1)))
     app.objects.append(Enemy(600, 500))
     app.objects.append(Enemy(100, 100))
 
