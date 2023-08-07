@@ -31,7 +31,6 @@ class Player(Tank):
         self.pR = 10
         self.pX = app.width // 2 - (2 * 3 * self.pR)
 
-        print("Player - points", self.hitPoints)
 
     def __repr__(self):
         return 'User'
@@ -48,7 +47,7 @@ class Player(Tank):
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
         
-        # Draw the user aim-target    
+        # Draw the user's possible projectiles on the bar
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
@@ -76,8 +75,9 @@ class Player(Tank):
         # Ensure that we're not violating any timer rules. 
         # Calculate the x and y vals using trigonometry. 
         if self.availableProjectiles > 0:
-            trigX =  15 * math.cos(math.radians(self.turretDegrees))
-            trigY = 15 * math.sin(math.radians(self.turretDegrees))
+            halfTube = self.tubeLength / 2
+            trigX = halfTube * math.cos(math.radians(self.turretDegrees))
+            trigY = halfTube * math.sin(math.radians(self.turretDegrees))
             projectileX = self.tubeX - trigX
             projectileY = self.tubeY - trigY
 
