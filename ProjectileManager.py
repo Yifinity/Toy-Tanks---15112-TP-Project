@@ -16,23 +16,25 @@ class ProjectileManager:
     def onStep(self, app):
         # First check that it's not empty
         for projectile in self.projectiles: 
-            for object in self.objects:
+            if projectile.checkCollision(app): 
+                for object in self.objects:
                     # Check collision of targets
                     check = object.checkHit(projectile)
+                    print(f'{object} test: {check}')
                     
                     if check: # if we haven't hit an enemy
                         # Check if we hit grid/or out of bounds
-                        if projectile.checkCollision(app): 
-                            projectile.onStep()
-                        
-                        else:
-                            # If we fail the grid-boundary test
-                            self.projectiles.remove(projectile)
-                            return
+                        projectile.onStep()
                     
                     else:
                         self.objects.remove(object)
+                        print(f'{object} has been destroyed')
                         self.projectiles.remove(projectile)
+                        return
+            else:
+                # If we fail the grid-boundary test
+                self.projectiles.remove(projectile)
+                return
 
 
     def redraw(self, app):

@@ -36,6 +36,8 @@ class Player(Tank):
         self.pR = 10
         self.pX = app.width // 2 - (2 * 3 * self.pR)
 
+    def __repr__(self):
+        return 'User'
 
     def redraw(self, app):    
         drawRect(self.x, self.y, self.width, self.height, border = self.border,

@@ -91,6 +91,9 @@ class Tank:
         self.stepCounts = 0
         self.timeInSecs = 0
 
+    def __repr__(self):
+        return 'Default Tank'
+
 
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
