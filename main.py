@@ -13,6 +13,7 @@ from Enemies.GreenEnemy import *
 from Projectile import * 
 from ProjectileManager import *
 from Grid import *
+from Scenes.GameOver import *
 from Scenes.Startup import *
 
 
@@ -31,6 +32,7 @@ def onAppStart(app):
     app.stepsPerSecond = 60
     app.currentScene = app.scenes[0]
     app.startup = Startup()
+    app.gameOverScene = GameOver()
 
     restartApp(app)
 
@@ -75,8 +77,8 @@ def redrawAll(app):
         for object in app.objects:
             object.redraw(app)
     
-    elif app.currentScene == app.scenes[5]
-        app.gameOverScene.onStep()
+    elif app.currentScene == app.scenes[5]:
+        app.gameOverScene.redraw(app)
     
 
 def onStep(app):
@@ -87,7 +89,7 @@ def onStep(app):
             app.currentScene = app.scenes[3]
             print(app.currentScene)
     
-    elif app.currentScene == app.scenes[5]
+    elif app.currentScene == app.scenes[5]:
         app.gameOverScene.onStep()
 
     elif app.currentScene == app.scenes[3]:
