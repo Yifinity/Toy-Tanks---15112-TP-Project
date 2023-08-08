@@ -39,7 +39,7 @@ class Startup:
             if self.counter < 45:
                 self.counter += 1
                 # Move the arrow to the right
-                arrowDistance = ((app.width - self.arrowX) + 20) // 20
+                arrowDistance = ((app.width - self.arrowX) + 10) // 20
                 self.arrowX += arrowDistance 
 
             elif self.counter < 60:
