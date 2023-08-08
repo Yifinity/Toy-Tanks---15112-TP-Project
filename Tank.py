@@ -19,6 +19,7 @@ class Tank:
 
         self.x = x
         self.y = y
+        self.r = 35
         self.borderWidth = 3
 
         # Change in angle while tank moves
@@ -162,6 +163,7 @@ class Tank:
                 if self.checkLines(self.idxHighestLeading, projectile):
                     return False
                 else:
+
                     return True
                 
         else:
@@ -264,11 +266,31 @@ class Tank:
             hitY = int(hitY)
             if ((not 0 <= hitX < self.grid.gWidth)
                  or (not 0 <= hitY < self.grid.gHeight)
+                 or (not self.checkTankCollision(hitX, hitY))
                  or (not self.grid.checkPoint(hitX, hitY))):
                  return False
             
         return True
+    
+    # Check tank-to-tank collision
+    def checkTankCollision(self, hitX, hitY):
+        # Go through all tanks and check if it hits their radius
+        for idx in range(len(app.objects)):
+            # print(len(app.objects))
+            # print(idx, end = ' | ')
+            # print(app.objects[idx])
+            tank = app.objects[idx]
 
+            # print(self == tank)
+            if (tank != self and 
+                Tank.distance(hitX, hitY, tank.x, tank.y) <= self.r):
+                    return False
+        return True
+
+    @staticmethod
+    def distance(x1, y1, x2, y2):
+        return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+                
     # Update all hitpoints based on what angle that are on relative to the tank 
     def updateHitPoints(self, pointsList, modX, modY, degrees):
         inputRads = math.radians(degrees)

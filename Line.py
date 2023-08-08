@@ -7,27 +7,45 @@ class Line:
     def __init__(self, point1, point2):
         self.point1X = point1[0]
         self.point1Y = point1[1]
-
         self.point2X = point2[0]
         self.point2Y = point2[1]
         
         dX = self.point2X - self.point1X
         dY = self.point2Y - self.point1Y
 
-        # Find edge cases for horizontal and vertical lines. 
-        self.slope = dY / dX
-        self.yIntercept = self.point1Y - (self.slope * self.point1X)
-
+        # print(dX, dY, end = ' | ')
+        # Check if we have a horizontal or vertical line. 
+        self.isHorizontal = True if dY == 0 else False
+        self.isVertical = True if dX == 0 else False
+        # print(f'h: {self.isHorizontal}, v: {self.isVertical}')
         self.points = []
 
-        leftmostPoint = min(self.point1X, self.point2X)
-        rightmostPoint = max(self.point1X, self.point2X)
+        self.leftmostPoint = int(min(self.point1X, self.point2X))
+        self.rightmostPoint = int(max(self.point1X, self.point2X))
 
-        # Add every point on the line to self.points
-        for xVal in range(int(leftmostPoint), int(rightmostPoint)):
-            yVal = (self.slope * xVal) + self.yIntercept
-            self.points.append((xVal, yVal))
+        if (not self.isHorizontal) and (not self.isVertical): 
+            self.slope = dY / dX
+            self.yIntercept = self.point1Y - (self.slope * self.point1X)
 
+            # Add every point on the line to self.points
+            for xVal in range(self.leftmostPoint, self.rightmostPoint):
+                yVal = (self.slope * xVal) + self.yIntercept
+                self.points.append((xVal, yVal))
+        
+        elif self.isHorizontal:
+            for xVal in range(self.leftMostPoint, self.rightmostPoint):
+                self.points.append((xVal, self.point1Y))
+
+        elif self.isVertical:
+            topmostPoint = int(min(self.point1Y, self.point2Y))
+            bottommostPoint = int(max(self.point1Y, self.point2Y))
+
+            # Lowervalue is a higher position. 
+            for yVal in range(topmostPoint, bottommostPoint):
+                self.points.append((self.point1X, yVal))
+
+    # We don't need to worry about horizontal/vertical lines 
+    # As the function that uses this doesn't include rotations of 90 degrees
     def evaluatePoint(self, startIdx, projectile):
         # using our good fashioned y = mx + b
         evaluatedY = (self.slope * projectile.cX) + self.yIntercept
