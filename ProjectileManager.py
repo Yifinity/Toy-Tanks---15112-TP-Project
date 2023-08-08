@@ -1,6 +1,7 @@
 # Class the manages all the projectiles that are in the game
 # Should have permissions to remove projectiles, and call kill functions
 from cmu_graphics import *
+from Enemies.RedEnemy import * 
 
 class ProjectileManager:
     def __init__(self, app):
@@ -8,7 +9,6 @@ class ProjectileManager:
 
         # Other classes will add to this list
         self.projectiles = []
-
 
     def addMissile(self, missile):
         self.projectiles.append(missile)
@@ -28,7 +28,10 @@ class ProjectileManager:
                     else:
                         if object == app.user:
                             app.gameOver = True
-                        self.objects.remove(object)
+                        else:
+                            app.userScore += 1
+                            self.generateNewTarget(object)
+
                         self.projectiles.remove(projectile)
                         return
             else:
@@ -41,4 +44,9 @@ class ProjectileManager:
         for projectile in self.projectiles:
             projectile.drawProjectile(app)
 
+
+    # Remove the enemy and add a new one
+    def generateNewTarget(self, enemy):
+        self.objects.append(RedEnemy(enemy.x, enemy.y))
+        self.objects.remove(enemy)
 
