@@ -75,6 +75,9 @@ def redrawAll(app):
         for object in app.objects:
             object.redraw(app)
     
+    elif app.currentScene == app.scenes[5]
+        app.gameOverScene.onStep()
+    
 
 def onStep(app):
     if app.currentScene == app.scenes[0]:
@@ -83,14 +86,22 @@ def onStep(app):
         if app.startup.isOver:
             app.currentScene = app.scenes[3]
             print(app.currentScene)
+    
+    elif app.currentScene == app.scenes[5]
+        app.gameOverScene.onStep()
 
     elif app.currentScene == app.scenes[3]:
         if not app.gameOver and not app.paused:
             app.projectileManager.onStep(app)
             for object in app.objects:
                 object.onStep(app)
-    
-    
+        
+        elif app.gameOver:
+            app.currentScene = app.scenes[5]
+
+        elif app.paused:
+            app.currentScene = app.scenes[4]    
+
 
 def onMousePress(app, mouseX, mouseY):
     if not app.gameOver and not app.paused:
