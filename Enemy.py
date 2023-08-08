@@ -16,7 +16,7 @@ class Enemy(Tank):
         self.turretDegrees = 0
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 100
+        self.fireFrequency = 5
         # self.anticipation = 2
         self.count = 0
 

@@ -37,6 +37,7 @@ def onAppStart(app):
     restartApp(app)
 
 def restartApp(app):
+    app.currentScene = app.scenes[3]
     app.userScore = 0
     app.gameOver = False
     app.paused = False
@@ -119,6 +120,7 @@ def onKeyPress(app, key):
     if key == 'r':
         if app.gameOver == True:
             restartApp(app)
+    
 
 def onKeyHold(app, keys):
     if not app.gameOver and not app.paused:
