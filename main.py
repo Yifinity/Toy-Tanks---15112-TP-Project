@@ -116,8 +116,6 @@ def onMouseMove(app, mouseX, mouseY):
             object.mouseMove(mouseX, mouseY)
 
 def onKeyPress(app, key):
-    if key == 'p':
-        app.paused = not app.paused
     if key == 'r':
         if app.gameOver == True:
             restartApp(app)
