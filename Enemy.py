@@ -31,6 +31,7 @@ class Enemy(Tank):
         self.differenceX = self.x - user.x
         self.differenceY = self.y - user.y
 
+
         turretRads = math.atan2(self.differenceY, self.differenceX)
 
         if self.notBlocked(user):
@@ -56,7 +57,7 @@ class Enemy(Tank):
                 
             else: # update our time to fire. 
                 self.count += 1
-                self.timeInSecs = self.count // 60 
+                self.timeInSecs = self.count / 60 
                 
     # Check if the turret's view is blocked by a wall. 
     def notBlocked(self, user):

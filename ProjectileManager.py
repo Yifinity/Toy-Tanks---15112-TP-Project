@@ -14,6 +14,7 @@ class ProjectileManager:
         self.projectiles.append(missile)
 
     def onStep(self, app):
+        print(len(self.projectiles))
         # First check that it's not empty
         for projectile in self.projectiles: 
             if projectile.checkCollision(app): 

@@ -7,4 +7,4 @@ class GreenEnemy(Enemy):
         self.color = 'lightSeaGreen'
         self.border = 'teal'
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 3
+        self.fireFrequency = 1.5
