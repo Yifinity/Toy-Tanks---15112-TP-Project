@@ -37,6 +37,7 @@ def onAppStart(app):
     restartApp(app)
 
 def restartApp(app):
+    app.userScore = 0
     app.gameOver = False
     app.paused = False
 
