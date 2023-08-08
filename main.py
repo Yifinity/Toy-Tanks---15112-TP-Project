@@ -13,16 +13,30 @@ from Enemies.GreenEnemy import *
 from Projectile import * 
 from ProjectileManager import *
 from Grid import *
+from Scenes.Startup import *
 
 
-def onAppStart(app):    
+def onAppStart(app): 
+    app.runningAnimation = True
+    app.scenes = {
+        0 : 'Startup',
+        1 : 'Intro', 
+        2 : 'CountDown',
+        3 : 'Game',
+        4 : 'Paused',
+        5 : 'GameOver'
+    }   
+
+    # Use 60 sets per second for easy conversion factor
+    app.stepsPerSecond = 60
+    app.currentScene = app.scenes[0]
+    app.startup = Startup()
+
     restartApp(app)
 
 def restartApp(app):
     app.gameOver = False
     app.paused = False
-    # Use 60 sets per second for easy conversion factor
-    app.stepsPerSecond = 60
 
     app.grid = Grid(app)
     app.objects = []
@@ -50,20 +64,31 @@ def restartApp(app):
     app.objects.append(RedEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
 
 
-
-
 def redrawAll(app):
-    app.grid.redraw(app)
-    app.projectileManager.redraw(app)
-    for object in app.objects:
-        object.redraw(app)
+    if app.currentScene == app.scenes[0]:
+        app.startup.redraw(app)
+
+    elif app.currentScene == app.scenes[3]:
+        # Game scene
+        app.grid.redraw(app)
+        app.projectileManager.redraw(app)
+        for object in app.objects:
+            object.redraw(app)
     
 
 def onStep(app):
-    if not app.gameOver and not app.paused:
-        app.projectileManager.onStep(app)
-        for object in app.objects:
-            object.onStep(app)
+    if app.currentScene == app.scenes[0]:
+        app.startup.onStep()
+        print(app.startup.isOver)
+        if app.startup.isOver:
+            app.currentScene = app.scenes[3]
+            print(app.currentScene)
+
+    elif app.currentScene == app.scenes[3]:
+        if not app.gameOver and not app.paused:
+            app.projectileManager.onStep(app)
+            for object in app.objects:
+                object.onStep(app)
     
     
 
