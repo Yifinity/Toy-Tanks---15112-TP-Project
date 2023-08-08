@@ -15,8 +15,8 @@ class Projectile:
 
         # Change in dX and dY
         # Zero points to left, so flip sign of dX and dY
-        self.dX = -2.5 * (math.cos(self.cAngle))
-        self.dY = -2.5 * (math.sin(self.cAngle))
+        self.dX = -1.75 * (math.cos(self.cAngle))
+        self.dY = -1.75 * (math.sin(self.cAngle))
 
 
         self.bounceAmount = 0

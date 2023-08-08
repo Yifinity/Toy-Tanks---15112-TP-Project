@@ -17,6 +17,7 @@ class Enemy(Tank):
 
         # Fire frequency = seconds per shot. 
         self.fireFrequency = 5
+        # self.anticipation = 2
         self.count = 0
 
 
