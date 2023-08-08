@@ -13,11 +13,11 @@ class Projectile:
         self.cAngle = cAngle # Face in right direction
         self.cRadius = 4 # tank's barrel is 8 pxls
 
-        # print(f'Projectile (degrees): {self.cAngle}', end = ' | ')
         # Change in dX and dY
         # Zero points to left, so flip sign of dX and dY
-        self.dX = -2.5 * (math.cos(self.cAngle))
-        self.dY = -2.5 * (math.sin(self.cAngle))
+        self.dX = -1.75 * (math.cos(self.cAngle))
+        self.dY = -1.75 * (math.sin(self.cAngle))
+
 
         self.bounceAmount = 0
 
@@ -29,6 +29,7 @@ class Projectile:
         # Handle bounces
         self.cX += self.dX
         self.cY += self.dY
+
         
     # Helper to control bound movements
     def checkCollision(self, app):

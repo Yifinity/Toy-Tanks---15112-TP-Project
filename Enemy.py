@@ -8,15 +8,16 @@ class Enemy(Tank):
 
         # Default that I may change. 
         self.availableProjectiles = 5
-        self.color = 'seaGreen'
-        self.border = 'darkGreen'
+        self.color = 'white'
+        self.border = 'grey'
 
         self.differenceX = 0
         self.differenceY = 0
         self.turretDegrees = 0
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 3
+        self.fireFrequency = 5
+        # self.anticipation = 2
         self.count = 0
 
 
@@ -27,11 +28,10 @@ class Enemy(Tank):
         # Check if we still have our user. 
         if app.user not in self.objects: return
         user = self.objects[0]
-        self.tX = user.x
-        self.tY = user.y
 
         self.differenceX = self.x - user.x
         self.differenceY = self.y - user.y
+
 
         turretRads = math.atan2(self.differenceY, self.differenceX)
 
@@ -56,11 +56,9 @@ class Enemy(Tank):
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))
                 
-
-            
             else: # update our time to fire. 
                 self.count += 1
-                self.timeInSecs = self.count // 60 
+                self.timeInSecs = self.count / 60 
                 
     # Check if the turret's view is blocked by a wall. 
     def notBlocked(self, user):

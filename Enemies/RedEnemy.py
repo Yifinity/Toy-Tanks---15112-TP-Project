@@ -1,11 +1,10 @@
 from Enemy import *
 
-class YellowEnemy(Enemy):
+class RedEnemy(Enemy):
     def __init__(self, x, y):
         super().__init__(x, y)
 
-        self.color = 'lemonChiffon'
-        self.border = 'gold'
-
+        self.color = 'salmon'
+        self.border = 'fireBrick'
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 2.5
+        self.fireFrequency = 0.75
