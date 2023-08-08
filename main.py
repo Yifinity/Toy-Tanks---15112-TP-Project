@@ -20,6 +20,7 @@ def onAppStart(app):
 
 def restartApp(app):
     app.gameOver = False
+    app.paused = False
     # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60
 
@@ -59,7 +60,7 @@ def redrawAll(app):
     
 
 def onStep(app):
-    if not app.gameOver:
+    if not app.gameOver and not app.paused:
         app.projectileManager.onStep(app)
         for object in app.objects:
             object.onStep(app)
@@ -67,23 +68,25 @@ def onStep(app):
     
 
 def onMousePress(app, mouseX, mouseY):
-    if not app.gameOver:
+    if not app.gameOver and not app.paused:
         for object in app.objects:
             object.mousePress(mouseX, mouseY)
 
 def onMouseMove(app, mouseX, mouseY):
-    if not app.gameOver:
+    if not app.gameOver and not app.paused:
         # We just want the player
         for object in app.objects:
             object.mouseMove(mouseX, mouseY)
 
 def onKeyPress(app, key):
+    if key == 'p':
+        app.paused = not app.paused
     if key == 'r':
         if app.gameOver == True:
             restartApp(app)
 
 def onKeyHold(app, keys):
-    if not app.gameOver:
+    if not app.gameOver and not app.paused:
         for object in app.objects:
             object.keyHold(keys)
     
