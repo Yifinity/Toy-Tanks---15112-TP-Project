@@ -14,13 +14,9 @@ class Startup:
 
         self.titleOpacity = 0
 
-                # Edited Wood Photo from Free Stock photos by Vecteezy 
-        # Inspired from Basic PIL Methods. 
-        # "https://www.vecteezy.com/free-photos"
+        # Photo of unicode THREE-D TOP-LIGHTED RIGHTWARDS EQUILATERAL ARROWHEAD
+        # https://unicode.bayashi.net/0x2B9A/%E2%AE%9A
         self.arrow = CMUImage(Image.open('Images\Arrow.png'))
-
-
-    
 
     def redraw(self, app):
         drawLabel("Yifinity", app.width // 2, self.textY,
