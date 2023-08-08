@@ -1,7 +1,11 @@
 # Class the manages all the projectiles that are in the game
 # Should have permissions to remove projectiles, and call kill functions
 from cmu_graphics import *
+from Enemies.GreenEnemy import * 
+from Enemies.YellowEnemy import *
 from Enemies.RedEnemy import * 
+
+import random
 
 class ProjectileManager:
     def __init__(self, app):
@@ -9,11 +13,20 @@ class ProjectileManager:
 
         # Other classes will add to this list
         self.projectiles = []
+        self.stepCount = 0
+        self.secCount = 2.5
+
+        self.tankQueue = []
 
     def addMissile(self, missile):
         self.projectiles.append(missile)
 
     def onStep(self, app):
+        self.stepCount += 1
+        if self.stepCount / 60 >= self.secCount:
+            self.generateNextTank()
+            self.stepCount = 0
+
         # First check that it's not empty
         for projectile in self.projectiles: 
             if projectile.checkCollision(app): 
@@ -30,7 +43,7 @@ class ProjectileManager:
                             app.gameOver = True
                         else:
                             app.userScore += 1
-                            self.generateNewTarget(object)
+                            self.addNextTank(object)
 
                         self.projectiles.remove(projectile)
                         return
@@ -44,9 +57,21 @@ class ProjectileManager:
         for projectile in self.projectiles:
             projectile.drawProjectile(app)
 
+    def addNextTank(self, enemy):
+        selection = random.randint(0, 2)
+        if selection == 0:
+            self.tankQueue.append(GreenEnemy(enemy.x, enemy.y))
+        elif selection == 1:
+            self.tankQueue.append(YellowEnemy(enemy.x, enemy.y))
+        else:
+            self.tankQueue.append(RedEnemy(enemy.x, enemy.y))
+        
+        self.objects.remove(enemy)
+
+
 
     # Remove the enemy and add a new one
-    def generateNewTarget(self, enemy):
-        self.objects.append(RedEnemy(enemy.x, enemy.y))
-        self.objects.remove(enemy)
+    def generateNextTank(self):
+        self.objects.append(self.tankQueue[0])
+        self.tankQueue.pop(0)
 
