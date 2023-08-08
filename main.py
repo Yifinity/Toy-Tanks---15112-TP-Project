@@ -6,6 +6,7 @@
 '''
 from Player import *
 from Enemy import *
+from YellowEnemy import *
 from Projectile import * 
 from ProjectileManager import *
 from Grid import *
@@ -16,7 +17,6 @@ def onAppStart(app):
 
 def restartApp(app):
     app.gameOver = False
-
     # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60
 
