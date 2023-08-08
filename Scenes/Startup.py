@@ -9,6 +9,7 @@ class Startup:
         self.targetTime = 5
 
         # Animation Taken from previous Tetris Project
+        # https://cs3-112-f22.academy.cs.cmu.edu/exercise/4969
         self.textY = app.height // 2 - 20
         self.arrowX = app.width // 2 + 95
 

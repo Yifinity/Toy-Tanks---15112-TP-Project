@@ -27,7 +27,6 @@ class ProjectileManager:
                     
                     else:
                         if object == app.user:
-                            print('STOP! GAME OVER')
                             app.gameOver = True
                         self.objects.remove(object)
                         self.projectiles.remove(projectile)

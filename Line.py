@@ -13,11 +13,9 @@ class Line:
         dX = self.point2X - self.point1X
         dY = self.point2Y - self.point1Y
 
-        # print(dX, dY, end = ' | ')
         # Check if we have a horizontal or vertical line. 
         self.isHorizontal = True if dY == 0 else False
         self.isVertical = True if dX == 0 else False
-        # print(f'h: {self.isHorizontal}, v: {self.isVertical}')
         self.points = []
 
         self.leftmostPoint = int(min(self.point1X, self.point2X))
@@ -51,7 +49,7 @@ class Line:
         evaluatedY = (self.slope * projectile.cX) + self.yIntercept
 
         # for the point to be in the shapes
-        # cY should be higher at poitns 0 and 3
+        # cY should be higher at points 0 and 3
         # and cY should be lower at points 1 and 2
         if startIdx == 0 or startIdx == 3:
             return (projectile.cY >= evaluatedY)

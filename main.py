@@ -56,7 +56,7 @@ def restartApp(app):
         app.grid.rowColToXY(2, 17),
         app.grid.rowColToXY(14, 17)
     ]
-    
+    # Add enemies at appropiate locations. 
     app.objects.append(Enemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
     app.objects.append(GreenEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
     app.objects.append(RedEnemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
@@ -84,10 +84,8 @@ def redrawAll(app):
 def onStep(app):
     if app.currentScene == app.scenes[0]:
         app.startup.onStep()
-        print(app.startup.isOver)
         if app.startup.isOver:
             app.currentScene = app.scenes[3]
-            print(app.currentScene)
     
     elif app.currentScene == app.scenes[5]:
         app.gameOverScene.onStep()
