@@ -14,8 +14,9 @@ class ProjectileManager:
         # Other classes will add to this list
         self.projectiles = []
         self.stepCount = 0
+        
+        # Get the seconds needed to spawn a new tank
         self.secCount = 2.5
-
         self.tankQueue = []
 
     def addMissile(self, missile):
@@ -23,7 +24,9 @@ class ProjectileManager:
 
     def onStep(self, app):
         self.stepCount += 1
-        if self.stepCount / 60 >= self.secCount:
+
+        # Check if the timer has fired the queue has tanks
+        if (len(self.tankQueue) != 0 and self.stepCount / 60 >= self.secCount):
             self.generateNextTank()
             self.stepCount = 0
 
@@ -31,10 +34,8 @@ class ProjectileManager:
         for projectile in self.projectiles: 
             if projectile.checkCollision(app): 
                 for object in self.objects:
-                    # Check collision of targets
-                    check = object.checkHit(projectile)
-                    
-                    if check: # if we haven't hit an enemy
+                    # Check if we hit a tank
+                    if object.checkHit(projectile): 
                         # Check if we hit grid/or out of bounds
                         projectile.onStep()
                     
@@ -44,6 +45,7 @@ class ProjectileManager:
                         else:
                             app.userScore += 1
                             self.addNextTank(object)
+                            self.stepCount = 0
 
                         self.projectiles.remove(projectile)
                         return
@@ -60,12 +62,16 @@ class ProjectileManager:
     def addNextTank(self, enemy):
         selection = random.randint(0, 2)
         if selection == 0:
+            print("Green Added")
             self.tankQueue.append(GreenEnemy(enemy.x, enemy.y))
         elif selection == 1:
+            print("Yellow Added")
             self.tankQueue.append(YellowEnemy(enemy.x, enemy.y))
         else:
+            print("Red Added")
             self.tankQueue.append(RedEnemy(enemy.x, enemy.y))
         
+
         self.objects.remove(enemy)
 
 

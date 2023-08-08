@@ -66,7 +66,7 @@ class Enemy(Tank):
         lineOfFire = Line((self.x, self.y), (user.x, user.y))
         for (x, y) in lineOfFire.points:
             # Check if each point on the line of fire is blocked 
-            if not self.grid.checkPoint(int(x), int(y)):
+            if not self.grid.checkPoint(x, y):
                 return False
-        
+            # pass
         return True
