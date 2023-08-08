@@ -1,4 +1,6 @@
 from cmu_graphics import *
+from PIL import Image
+
 
 class Startup:
     def __init__(self):
@@ -9,8 +11,14 @@ class Startup:
         # Animation Taken from previous Tetris Project
         self.textY = app.height // 2 - 20
         self.arrowX = app.width // 2 + 95
-        self.copyright = chr(0x2b9a)
+
         self.titleOpacity = 0
+
+                # Edited Wood Photo from Free Stock photos by Vecteezy 
+        # Inspired from Basic PIL Methods. 
+        # "https://www.vecteezy.com/free-photos"
+        self.arrow = CMUImage(Image.open('Images\Arrow.png'))
+
 
     
 
@@ -18,9 +26,8 @@ class Startup:
         drawLabel("Yifinity", app.width // 2, self.textY,
                 align = 'bottom', size = 40, font = 'orbitron', bold = True, 
                 opacity = self.titleOpacity)
-        drawLabel(self.copyright, self.arrowX, self.textY,
-                align = 'bottom', size = 40, font = 'symbols', bold = True, 
-                opacity = self.titleOpacity)
+        drawImage(self.arrow, self.arrowX, app.height // 2 - 20, height = 42.5, 
+                  width = 42.5, align = 'center') 
 
     
     def onStep(self):
