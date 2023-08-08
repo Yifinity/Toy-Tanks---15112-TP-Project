@@ -42,11 +42,11 @@ def restartApp(app):
     
     app.objects.append(Enemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
     app.objects.append(GreenEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
-    # app.objects.append(RedEnemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
+    app.objects.append(RedEnemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
 
-    # app.objects.append(YellowEnemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
-    # app.objects.append(GreenEnemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
-    # app.objects.append(RedEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
+    app.objects.append(YellowEnemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
+    app.objects.append(GreenEnemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
+    app.objects.append(RedEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
 
 
 

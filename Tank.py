@@ -277,8 +277,8 @@ class Tank:
         # Go through all tanks and check if it hits their radius
         for idx in range(len(app.objects)):
             # print(len(app.objects))
-            print(idx, end = ' | ')
-            print(app.objects[idx])
+            # print(idx, end = ' | ')
+            # print(app.objects[idx])
             tank = app.objects[idx]
 
             # print(self == tank)
