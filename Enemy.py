@@ -16,7 +16,7 @@ class Enemy(Tank):
         self.turretDegrees = 0
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 100
+        self.fireFrequency = 5
         # self.anticipation = 2
         self.count = 0
 
@@ -66,7 +66,7 @@ class Enemy(Tank):
         lineOfFire = Line((self.x, self.y), (user.x, user.y))
         for (x, y) in lineOfFire.points:
             # Check if each point on the line of fire is blocked 
-            if not self.grid.checkPoint(int(x), int(y)):
+            if not self.grid.checkPoint(x, y):
                 return False
-        
+            # pass
         return True

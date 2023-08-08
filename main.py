@@ -37,6 +37,7 @@ def onAppStart(app):
     restartApp(app)
 
 def restartApp(app):
+    app.currentScene = app.scenes[3]
     app.userScore = 0
     app.gameOver = False
     app.paused = False
@@ -57,7 +58,7 @@ def restartApp(app):
         app.grid.rowColToXY(2, 17),
         app.grid.rowColToXY(14, 17)
     ]
-    # Add enemies at appropiate locations. 
+    # # Add enemies at appropiate locations. 
     app.objects.append(Enemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
     app.objects.append(GreenEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
     app.objects.append(RedEnemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
@@ -116,11 +117,10 @@ def onMouseMove(app, mouseX, mouseY):
             object.mouseMove(mouseX, mouseY)
 
 def onKeyPress(app, key):
-    if key == 'p':
-        app.paused = not app.paused
     if key == 'r':
         if app.gameOver == True:
             restartApp(app)
+    
 
 def onKeyHold(app, keys):
     if not app.gameOver and not app.paused:
