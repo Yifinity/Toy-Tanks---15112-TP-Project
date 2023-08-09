@@ -15,8 +15,8 @@ class Projectile:
 
         # Change in dX and dY
         # Zero points to left, so flip sign of dX and dY
-        self.dX = -2 * (math.cos(self.cAngle))
-        self.dY = -2 * (math.sin(self.cAngle))
+        self.dX = -1.15 * (math.cos(self.cAngle))
+        self.dY = -1.15 * (math.sin(self.cAngle))
 
 
         self.bounceAmount = 0
@@ -38,21 +38,21 @@ class Projectile:
         newY = self.cY + self.dY
 
         if ((0 <= newX < self.grid.gWidth) and (0 <= newY < self.grid.gHeight)
-             and self.grid.checkPoint(int(newX), int(newY))):
+             and self.grid.checkPoint(newX, newY)):
             return True
-
         
         else: # New position doesn't work. 
             if self.bounceAmount < 1: 
                 # Check whehter it's x or y that's the problem
                 if ((not 0 <= self.cX < self.grid.gWidth) 
-                     or self.grid.checkPoint(int(self.cX), int(newY))):
+                     or self.grid.checkPoint(self.cX, newY)):
                     self.dX *= -1
                 
                 # run this as an if later
                 elif ((not 0 <= self.cY < self.grid.gHeight)
-                      or self.grid.checkPoint(int(newX), int(self.cY))):
+                      or self.grid.checkPoint(newX, self.cY)):
                     self.dY *= -1
+
 
                 # update bounce count
                 self.bounceAmount += 1                 

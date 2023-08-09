@@ -12,8 +12,8 @@ class GameOver:
     def redraw(self, app):
         drawImage(self.gameOver, app.width // 2, app.height // 2, 
                   height = app.height, width = app.width, align = 'center') 
-        drawLabel("Game Over!", app.width // 2, app.height // 2, size = 60,
-                  bold = True)
+        drawLabel("Game Over! Score " + str(app.userScore), app.width // 2, 
+                  app.height // 2, size = 60, bold = True)
 
     def keyPress(self, key):
         if key == 'r':
