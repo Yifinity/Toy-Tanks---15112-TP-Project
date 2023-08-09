@@ -5,7 +5,7 @@ from Player import *
 class Instructions:
     def __init__(self):
         self.visible = False
-        self.count = 180
+        self.count = 240
         self.timer = 0
 
         # Coordinates for the text Instructions
@@ -30,7 +30,7 @@ class Instructions:
         # Y position for text telling you to press space to start
         self.readyY = self.mouseInstructY + 175
         self.readyOpacity = 95
-        self.dO = -5
+        self.dO = -2.5
 
         # Icon Images
         # The following key images are taken from IconExperience:
@@ -101,25 +101,29 @@ class Instructions:
         
         drawLabel("Press [Space] to Start", self.instructionX, self.readyY, 
                   font = 'orbitron', opacity = self.readyOpacity, bold = True,
-                  size = 25)
+                  size = 25, visible = not self.visible)
 
                 # Show a image of the tank the user can control 
         drawImage(self.testUser, self.testUserX, self.testUserY,
                   width = self.tankWidth, height = self.tankHeight,
                   align = 'center', rotateAngle = self.degrees)
         
+        drawLabel(str(self.timer), self.instructionX, app.height // 2, 
+            font = 'orbitron', opacity = self.readyOpacity, bold = True,
+            size = 150, visible = self.visible)
+        
     def keyPress(self, key):
         if key == 'space':
             self.visible = True
 
-
     def onStep(self):
+        # Create a changing opacity animation
+        if (self.readyOpacity >= 95 and self.dO > 0
+            or self.readyOpacity <= 5 and self.dO < 0):
+            self.dO *= -1
+            self.readyOpacity += self.dO
         
-        if self.readyOpacity >= 95:
-            self.readyOpacity -= 5
-
-        elif self.readyOpacity <= 5:
-            self.readyOpacity += 1
+        self.readyOpacity += self.dO
 
         if self.visible:
             self.count -= 1
