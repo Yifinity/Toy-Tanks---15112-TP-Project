@@ -55,6 +55,9 @@ class Player(Tank):
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
         
+        drawLabel("Score: " + str(app.userScore), 100, self.pY, size = 50, 
+                  font = 'orbitron', bold = True)
+
         # Show how many projectiles we have 
         for projectIdx in range(self.availableProjectiles):
             pY, pX = self.pY, self.pX + (projectIdx * (3 * self.pR))
