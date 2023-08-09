@@ -30,7 +30,7 @@ class Instructions:
         # Y position for text telling you to press space to start
         self.readyY = self.mouseInstructY + 175
         self.readyOpacity = 95
-        self.dO = -2.5
+        self.dO = -1.5
 
         # Icon Images
         # The following key images are taken from IconExperience:
