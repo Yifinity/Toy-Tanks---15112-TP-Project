@@ -54,7 +54,7 @@ class Instructions:
 
         # Test tank
         self.testUserX = self.instructionX
-        self.testUserY = 500
+        self.testUserY = 450
         self.degrees = 0
         self.dAngle = 3
 
@@ -130,7 +130,7 @@ class Instructions:
             self.timer = self.count // 60
 
             if self.count == 0:
-                app.currentScene = app.runScenes[3]
+                app.currentScene = app.runScenes[4]
 
 
     def mousePress(self, mouseX, mouseY):

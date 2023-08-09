@@ -52,7 +52,7 @@ class Player(Tank):
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
         
-        drawLabel("Score: " + str(app.userScore), 100, self.pY, size = 50, 
+        drawLabel("Score: " + str(app.userScore), 150, self.pY, size = 40, 
                   font = 'orbitron', bold = True)
 
         # Show how many projectiles we have 
