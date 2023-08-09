@@ -8,8 +8,6 @@
 from Scenes.Startup import *
 from Scenes.Instructions import *
 from Scenes.RunGame import *
-from Scenes.GameOver import *
-
 
 def onAppStart(app): 
     app.runningAnimation = True
@@ -17,8 +15,7 @@ def onAppStart(app):
          Startup(),
          Instructions(),
          None,
-         RunGame(app),
-         GameOver() 
+         RunGame(app)
     ]
     # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60
