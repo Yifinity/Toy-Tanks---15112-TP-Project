@@ -40,7 +40,7 @@ class Startup:
 
             elif self.counter < 60:
                 # Create a small pause
-                self.counter += 1.75
+                self.counter += 1.85
 
             else:
                 # When it's over, move to the next scene

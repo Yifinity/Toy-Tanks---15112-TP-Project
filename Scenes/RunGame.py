@@ -12,7 +12,6 @@ from Grid import *
 
 class RunGame:
     def __init__(self, app):
-        print('Gameplay Created')
         self.restartApp(app)
         print(app.gameOver, app.paused)
 
