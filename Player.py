@@ -46,10 +46,7 @@ class Player(Tank):
         
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
-        
-        drawLabel(app.userScore, 100, self.pY, size = 30, font = 'orbitron',
-                  bold = True)
-        
+
         # Draw the user's possible projectiles on the bar
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
