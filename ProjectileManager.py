@@ -62,18 +62,15 @@ class ProjectileManager:
     def addNextTank(self, enemy):
         selection = random.randint(0, 2)
         if selection == 0:
-            print("Green Added")
             self.tankQueue.append(GreenEnemy(enemy.x, enemy.y))
+
         elif selection == 1:
-            print("Yellow Added")
             self.tankQueue.append(YellowEnemy(enemy.x, enemy.y))
+
         else:
-            print("Red Added")
             self.tankQueue.append(RedEnemy(enemy.x, enemy.y))
         
-
         self.objects.remove(enemy)
-
 
 
     # Remove the enemy and add a new one

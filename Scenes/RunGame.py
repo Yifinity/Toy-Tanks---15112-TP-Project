@@ -22,6 +22,9 @@ class RunGame:
 
         self.replayY = app.height // 2 + 100
 
+        self.pausedY = app.height // 2 - 15
+        self.pressResumeY = self.pausedY + 50
+
         self.dO = -2.5
         self.readyOpacity = 95
 
@@ -97,6 +100,19 @@ class RunGame:
             drawLabel("Press [Space] to Play Again", app.width // 2, self.replayY, 
                       font = 'orbitron', opacity = self.readyOpacity,
                        bold = True, size = 25)
+            
+        elif app.paused:
+            drawRect(app.width // 2, app.height // 2, 600, 200,
+                     fill = 'maroon', border = 'darkBlue', borderWidth = 10,
+                     align = 'center')
+            
+            drawLabel("[Paused]", app.width // 2, self.pausedY,
+                       size = 50, bold = True)
+        
+            # Copy and pasted from instructions.py
+            drawLabel("Press [p] to resume", app.width // 2, self.pressResumeY, 
+                      font = 'orbitron', bold = True, size = 25)
+
     
     def keyHold(self, keys):
         if not app.gameOver and not app.paused:

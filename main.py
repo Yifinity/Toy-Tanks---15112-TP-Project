@@ -16,7 +16,7 @@ def onAppStart(app):
          Startup(),
          Introduction(), 
          Instructions(),
-         None,
+         None, # supposted to be missions
          RunGame(app)
     ]
     # Use 60 sets per second for easy conversion factor
