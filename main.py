@@ -6,6 +6,7 @@
 '''
 
 from Scenes.Startup import *
+from Scenes.Introduction import *
 from Scenes.Instructions import *
 from Scenes.RunGame import *
 
@@ -13,6 +14,7 @@ def onAppStart(app):
     app.runningAnimation = True
     app.runScenes = [
          Startup(),
+         Introduction(), 
          Instructions(),
          None,
          RunGame(app)
