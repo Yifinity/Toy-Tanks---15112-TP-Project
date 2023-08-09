@@ -1,7 +1,7 @@
 # Game that controls what we do when running actual gameplay
 from cmu_graphics import *
 from Player import *
-from Enemy import *
+from Enemies.Enemy import *
 from Enemies.RedEnemy import *
 from Enemies.YellowEnemy import *
 from Enemies.GreenEnemy import *
