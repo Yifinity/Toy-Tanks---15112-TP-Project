@@ -15,18 +15,22 @@ class GameOver:
         drawLabel("Game Over!", app.width // 2, app.height // 2, size = 60,
                   bold = True)
 
-    
+    def keyPress(self, key):
+        if key == 'r':
+                # Send back to gameplay scene
+                app.currentScene = app.runScenes[3]
+                # Tell gameplay scene to restart itself
+                app.currentScene.restartApp(app)
+
     def onStep(self):
         pass
     
-    def onMousePress(app, mouseX, mouseY):
+    def mousePress(self, mouseX, mouseY):
         pass
 
-    def onMouseMove(app, mouseX, mouseY):
+    def mouseMove(self, mouseX, mouseY):
         pass
 
-    def keyPress(self, key):
-        pass
 
     def keyHold(self, keys):
         pass

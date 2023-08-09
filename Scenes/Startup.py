@@ -43,12 +43,13 @@ class Startup:
                 self.counter += 2
 
             else:
-                self.isOver = True    
+                # When it's over, 
+                app.currentScene = app.runScenes[3]
 
-    def onMousePress(app, mouseX, mouseY):
+    def sousePress(app, mouseX, mouseY):
         pass
 
-    def onMouseMove(app, mouseX, mouseY):
+    def mouseMove(app, mouseX, mouseY):
         pass
 
     def keyPress(self, key):
