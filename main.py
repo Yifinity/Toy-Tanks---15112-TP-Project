@@ -7,24 +7,16 @@
 
 
 from Scenes.Startup import *
+from Scenes.Instructions import *
 from Scenes.RunGame import *
 from Scenes.GameOver import *
 
 
 def onAppStart(app): 
     app.runningAnimation = True
-    app.scenes = {
-        0 : 'Startup',
-        1 : 'Intro', 
-        2 : 'CountDown',
-        3 : 'Game',
-        4 : 'Paused',
-        5 : 'GameOver'
-    }   
-
     app.runScenes = [
          Startup(),
-         None,
+         Instructions(),
          None,
          RunGame(app),
          GameOver() 
