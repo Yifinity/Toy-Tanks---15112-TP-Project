@@ -110,14 +110,12 @@ class ProjectileManager:
         # Check if our tank is there so we don't pop into their vicinity
         if self.isTankThere(nextEnemy.x, nextEnemy.y):
             if len(self.tankQueue) >= 2:
-                print('new idx')
 
                 # move the failed object to the end of the list
                 self.tankQueue.append(nextEnemy)
                 self.tankQueue.pop(0)
 
             else:
-                print('no space!')
                 return 
 
         # Run normally with the next tank at index 0
