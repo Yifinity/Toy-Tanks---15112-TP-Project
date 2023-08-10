@@ -52,7 +52,8 @@ class Enemy(Tank):
                 self.count = 0
                 self.timeInSecs = 0
 
-                self.projectileManager.addMissile(
+                # Fire the missile
+                app.projectiles.append(
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))
                 

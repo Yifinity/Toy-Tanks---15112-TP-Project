@@ -36,6 +36,7 @@ class RunGame:
 
         app.grid = Grid(app)
         app.objects = []
+        app.projectiles = []
         app.projectileManager = ProjectileManager(app)
         app.user = Player(app.width // 2, app.height // 2)
         app.objects.append(app.user)
@@ -65,6 +66,9 @@ class RunGame:
             app.projectileManager.onStep(app)
             for object in app.objects:
                 object.onStep(app)
+            
+            for projectile in app.projectiles:
+                app.projectileManager.checkStep(projectile)
         
         elif app.gameOver:
             # Copy and pasted from Instructions.py
@@ -83,10 +87,14 @@ class RunGame:
     def redraw(self, app):
         app.grid.redraw(app)
         app.projectileManager.redraw(app)
+
         for object in app.objects:
             object.redraw(app)
-        
-        
+
+        # manually draw all prctiles
+        for projectile in app.projectiles:
+            projectile.drawProjectile(app)
+
 
         if app.gameOver:
             drawRect(app.width // 2, app.height // 2, 600, 250,
