@@ -1,7 +1,7 @@
 # Game that controls what we do when running actual gameplay
 from cmu_graphics import *
 from Player import *
-from Enemy import *
+from Enemies.Enemy import *
 from Enemies.RedEnemy import *
 from Enemies.YellowEnemy import *
 from Enemies.GreenEnemy import *
@@ -10,12 +10,23 @@ from ProjectileManager import *
 from Grid import *
 
 
+
 class RunGame:
     def __init__(self, app):
-        print('Gameplay Created')
         self.restartApp(app)
-        print(app.gameOver, app.paused)
 
+        # label definitions
+        self.gameOverY = app.height // 2 - 75
+        self.scoreY = self.gameOverY + 50
+        self.hiScoreY = self.scoreY + 25
+
+        self.replayY = app.height // 2 + 100
+
+        self.pausedY = app.height // 2 - 15
+        self.pressResumeY = self.pausedY + 50
+
+        self.dO = -2.5
+        self.readyOpacity = 95
 
     def restartApp(self, app):
         app.userScore = 0
@@ -40,12 +51,12 @@ class RunGame:
         ]
         # Add enemies at appropiate locations. 
         app.objects.append(Enemy(app.enemyCoords[0][0], app.enemyCoords[0][1]))
-        app.objects.append(GreenEnemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
-        app.objects.append(RedEnemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
+        app.objects.append(Enemy(app.enemyCoords[1][0], app.enemyCoords[1][1]))
+        app.objects.append(Enemy(app.enemyCoords[2][0], app.enemyCoords[2][1]))
 
-        app.objects.append(YellowEnemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
-        app.objects.append(GreenEnemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
-        app.objects.append(RedEnemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
+        app.objects.append(Enemy(app.enemyCoords[3][0], app.enemyCoords[3][1]))
+        app.objects.append(Enemy(app.enemyCoords[4][0], app.enemyCoords[4][1]))
+        app.objects.append(Enemy(app.enemyCoords[5][0], app.enemyCoords[5][1]))
 
 
     def onStep(self):
@@ -55,14 +66,53 @@ class RunGame:
                 object.onStep(app)
         
         elif app.gameOver:
-            # Run explosion
-            app.currentScene = app.runScenes[4]
+            # Copy and pasted from Instructions.py
+            # Create a changing opacity animation
+            if (self.readyOpacity >= 95 and self.dO > 0
+                or self.readyOpacity <= 5 and self.dO < 0):
+                self.dO *= -1
+                self.readyOpacity += self.dO
+            
+            self.readyOpacity += self.dO
+
 
     def redraw(self, app):
         app.grid.redraw(app)
         app.projectileManager.redraw(app)
         for object in app.objects:
             object.redraw(app)
+
+        if app.gameOver:
+            drawRect(app.width // 2, app.height // 2, 600, 300,
+                     fill = 'maroon', border = 'darkBlue', borderWidth = 10,
+                     align = 'center')
+            
+            drawLabel("Game Over!", app.width // 2, 
+                      self.gameOverY, size = 50, bold = True)
+            
+            drawLabel("Score: " + str(app.userScore), app.width // 2, 
+                      self.scoreY, size = 20, bold = True)
+            
+            drawLabel("High Score: " + str(app.userScore), app.width // 2, 
+                      self.hiScoreY, size = 20, bold = True)
+            
+            # Copy and pasted from instructions.py
+            drawLabel("Press [Space] to Play Again", app.width // 2, self.replayY, 
+                      font = 'orbitron', opacity = self.readyOpacity,
+                       bold = True, size = 25)
+            
+        elif app.paused:
+            drawRect(app.width // 2, app.height // 2, 600, 200,
+                     fill = 'maroon', border = 'darkBlue', borderWidth = 10,
+                     align = 'center')
+            
+            drawLabel("[Paused]", app.width // 2, self.pausedY,
+                       size = 50, bold = True)
+        
+            # Copy and pasted from instructions.py
+            drawLabel("Press [p] to resume", app.width // 2, self.pressResumeY, 
+                      font = 'orbitron', bold = True, size = 25)
+
     
     def keyHold(self, keys):
         if not app.gameOver and not app.paused:
@@ -81,6 +131,9 @@ class RunGame:
                 object.mouseMove(mouseX, mouseY)
 
     def keyPress(self, key):
+        if key == 'space' and app.gameOver:
+            self.restartApp(app)
+
         # We want these functionality to only be sent when we're playing
         if key == 'p':
             app.paused = not app.paused

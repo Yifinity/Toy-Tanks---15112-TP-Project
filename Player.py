@@ -46,16 +46,13 @@ class Player(Tank):
         
         drawCircle(self.x, self.y, self.capRad, fill = self.tubeColor,
                    border = self.tubeBorder)
-        
-        drawLabel(app.userScore, 100, self.pY, size = 30, font = 'orbitron',
-                  bold = True)
-        
+
         # Draw the user's possible projectiles on the bar
         drawCircle(self.mX, self.mY, self.mRad, fill = self.mCol,
                    visible = self.mVis, border = self.color, 
                   borderWidth = self.mBorderWidth)
         
-        drawLabel("Score: " + str(app.userScore), 100, self.pY, size = 50, 
+        drawLabel("Score: " + str(app.userScore), 150, self.pY, size = 40, 
                   font = 'orbitron', bold = True)
 
         # Show how many projectiles we have 
@@ -102,12 +99,12 @@ class Player(Tank):
         newX, newY, newDegrees = self.x, self.y, self.degrees
         # if-elif pairs ensures no control conflicts
         if 'w' in keys:
-            newX += 2 * math.cos(math.radians(self.degrees))
-            newY += 2 * math.sin(math.radians(self.degrees))
+            newX += 2.5 * math.cos(math.radians(self.degrees))
+            newY += 2.5 * math.sin(math.radians(self.degrees))
             
         elif 's' in keys: 
-            newX -= 2 * math.cos(math.radians(self.degrees))
-            newY -= 2 * math.sin(math.radians(self.degrees))
+            newX -= 2.5 * math.cos(math.radians(self.degrees))
+            newY -= 2.5 * math.sin(math.radians(self.degrees))
 
         if 'a' in keys: 
             newDegrees -= self.dAngle

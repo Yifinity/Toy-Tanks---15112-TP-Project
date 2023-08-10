@@ -5,29 +5,19 @@
 * Date: 10 August 2023
 '''
 
-
 from Scenes.Startup import *
+from Scenes.Introduction import *
+from Scenes.Instructions import *
 from Scenes.RunGame import *
-from Scenes.GameOver import *
-
 
 def onAppStart(app): 
     app.runningAnimation = True
-    app.scenes = {
-        0 : 'Startup',
-        1 : 'Intro', 
-        2 : 'CountDown',
-        3 : 'Game',
-        4 : 'Paused',
-        5 : 'GameOver'
-    }   
-
     app.runScenes = [
          Startup(),
-         None,
-         None,
-         RunGame(app),
-         GameOver() 
+         Introduction(), 
+         Instructions(),
+         None, # supposted to be missions
+         RunGame(app)
     ]
     # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60

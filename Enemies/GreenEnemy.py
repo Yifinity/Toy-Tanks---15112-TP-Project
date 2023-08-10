@@ -1,4 +1,4 @@
-from Enemy import *
+from Enemies.Enemy import *
 
 class GreenEnemy(Enemy):
     def __init__(self, x, y):

@@ -1,7 +1,6 @@
 from cmu_graphics import *
 from PIL import Image
 
-
 class Startup:
     def __init__(self):
         self.isOver = False
@@ -29,22 +28,23 @@ class Startup:
     
     def onStep(self):
         if self.titleOpacity < 100:
-            # Increase opacity
+            # Have title fall down
             self.titleOpacity += 10
-            self.textY += 2
+            self.textY += 1.5
         else:
             if self.counter < 45:
-                self.counter += 1
+                self.counter += 0.5
                 # Move the arrow to the right
                 arrowDistance = ((app.width - self.arrowX) + 10) // 20
                 self.arrowX += arrowDistance 
 
             elif self.counter < 60:
-                self.counter += 2
+                # Create a small pause
+                self.counter += 1.85
 
             else:
-                # When it's over, 
-                app.currentScene = app.runScenes[3]
+                # When it's over, move to the next scene
+                app.currentScene = app.runScenes[1]
 
     def sousePress(app, mouseX, mouseY):
         pass
