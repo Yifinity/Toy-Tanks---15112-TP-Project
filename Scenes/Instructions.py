@@ -54,7 +54,7 @@ class Instructions:
 
         # Test tank
         self.testUserX = self.instructionX
-        self.testUserY = 450
+        self.testUserY = 425
         self.degrees = 0
         self.dAngle = 3
 
