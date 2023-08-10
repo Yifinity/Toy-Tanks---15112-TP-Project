@@ -84,7 +84,8 @@ class Player(Tank):
             projectileX = self.tubeX - trigX
             projectileY = self.tubeY - trigY
 
-            self.projectileManager.addMissile(
+            # Debug - add our new projectile to the list. 
+            app.projectiles.append(
                 Projectile(projectileX, projectileY, 
                             math.radians(self.turretDegrees)))
             

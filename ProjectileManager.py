@@ -23,42 +23,39 @@ class ProjectileManager:
         self.removedLocations = []
         self.sampleSize = 50
 
-    def addMissile(self, missile):
-        self.projectiles.append(missile)
+    def checkStep(self, projectile):
+        if projectile.checkCollision(app): 
+            for object in self.objects:
+                # Check if we hit a tank
+                if object.checkHit(projectile): 
+                    # Check if we hit grid/or out of bounds
+                    projectile.onStep()
+                
+                else:
+                    if object == app.user:
+                        app.gameOver = True
+                    else:
+                        app.userScore += 1
+                        self.addNextTank(object)
+                        self.stepCount = 0
+
+                    app.projectiles.remove(projectile)
+                    return
+        else:
+            # If we fail the grid-boundary test
+            app.projectiles.remove(projectile)
+            return
+
 
     def onStep(self, app):
         self.stepCount += 1
 
         # Check if the timer has fired the queue has tanks
         if (len(self.tankQueue) != 0 and (self.stepCount / 60 >= self.secCount 
-                                          or len(self.objects) < 5)):
+            or len(self.objects) < 5)):
             self.generateNextTank()
             self.stepCount = 0
-
-        # First check that it's not empty
-        for projectile in self.projectiles: 
-            if projectile.checkCollision(app): 
-                for object in self.objects:
-                    # Check if we hit a tank
-                    if object.checkHit(projectile): 
-                        # Check if we hit grid/or out of bounds
-                        projectile.onStep()
-                    
-                    else:
-                        if object == app.user:
-                            app.gameOver = True
-                        else:
-                            app.userScore += 1
-                            self.addNextTank(object)
-                            self.stepCount = 0
-
-                        self.projectiles.remove(projectile)
-                        return
-            else:
-                # If we fail the grid-boundary test
-                self.projectiles.remove(projectile)
-                return
-
+            
 
     def redraw(self, app):
         for projectile in self.projectiles:
@@ -76,7 +73,6 @@ class ProjectileManager:
 
         # Get a coodinate randomly from the removed location.         
         (cordX, cordY) = random.choice(self.removedLocations)        
-
 
         # Remove that location, as we are going to use it to spawn a tank. 
         self.removedLocations.remove((cordX, cordY))
@@ -103,7 +99,6 @@ class ProjectileManager:
 
     # Remove the enemy and add a new one
     def generateNextTank(self):
-        print(self.tankQueue)
         newIdx = 0
         nextEnemy = self.tankQueue[newIdx]
 

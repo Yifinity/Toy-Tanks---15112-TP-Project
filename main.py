@@ -24,7 +24,8 @@ def onAppStart(app):
 
     app.highScore = 0
     # Starting scene is our start up animation. 
-    app.currentScene = app.runScenes[0]
+    app.currentScene = app.runScenes[4]
+
 
 def redrawAll(app):
     app.currentScene.redraw(app)    
