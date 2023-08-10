@@ -30,8 +30,7 @@ class Projectile:
         self.cX += self.dX
         self.cY += self.dY
 
-        
-    # Helper to control bound movements
+ 
     def checkCollision(self, app):
         # Look three points ahead
         newX = self.cX + self.dX
@@ -42,18 +41,22 @@ class Projectile:
             return True
         
         else: # New position doesn't work. 
+            print((0 <= newX < self.grid.gWidth) and (0 <= newY < self.grid.gHeight), end = ' and ')
+            print(self.grid.checkPoint(newX, newY), end = ' bounce ')
+            print (self.bounceAmount)
+            
             if self.bounceAmount < 1: 
-                # Check whehter it's x or y that's the problem
-                if ((not 0 <= self.cX < self.grid.gWidth) 
-                     or self.grid.checkPoint(self.cX, newY)):
+                # First check if we're out of bounds
+                if (not 0 <= self.cX < self.grid.gWidth): 
                     self.dX *= -1
-                
-                # run this as an if later
-                elif ((not 0 <= self.cY < self.grid.gHeight)
-                      or self.grid.checkPoint(newX, self.cY)):
+
+                elif (not 0 <= self.cY < self.grid.gHeight):
                     self.dY *= -1
-
-
+                
+                # Check and manage grid collisions
+                else: 
+                    self.manageGridCollision(newX, newY)
+                
                 # update bounce count
                 self.bounceAmount += 1                 
                 return True
@@ -61,3 +64,40 @@ class Projectile:
             else:
                 # If both cases fail, 
                 return False
+    
+    # Use a recursive function to find whether we had an x or y bounce
+    def manageGridCollision(self, testX, testY):
+        # Amount of times we need to get out of a grid 
+        xCounter = self.countRevertTimes(0, testX, testY,  True)
+        yCounter = self.countRevertTimes(0, testX, testY, False)
+        print(xCounter, yCounter)
+
+        if xCounter > yCounter:
+            # If removing the y led one to get out of the grid faster, 
+            self.dY *= -1
+        
+        elif xCounter < yCounter:
+            self.dX *= -1
+        
+        else:
+            # if both had equal count amounts, do both
+            self.dX *= -1
+            self.dY *= -1
+
+
+    def countRevertTimes(self, count, testX, testY, testXValue):
+        # set a limit to our count
+        if self.grid.checkPoint(testX, testY) or count > 10:
+            return count
+        
+        else:
+            # If we're testing the x value, 
+            if testXValue:
+                testX -= self.dX # revert x value
+                return self.countRevertTimes(count + 1, testX, testY, True)
+            
+            else:
+                testY -= self.dY
+                return self.countRevertTimes(count + 1, testX, testY, False)
+
+
