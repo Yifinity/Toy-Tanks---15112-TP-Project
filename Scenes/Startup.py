@@ -25,7 +25,6 @@ class Startup:
         drawImage(self.arrow, self.arrowX, app.height // 2 - 20, height = 42.5, 
                   width = 42.5, align = 'center') 
 
-    
     def onStep(self):
         if self.titleOpacity < 100:
             # Have title fall down

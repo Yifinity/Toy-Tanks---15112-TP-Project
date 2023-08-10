@@ -132,13 +132,11 @@ class Instructions:
             if self.count == 0:
                 app.currentScene = app.runScenes[4]
 
-
     def mousePress(self, mouseX, mouseY):
         pass
 
     def mouseMove(self, mouseX, mouseY):
         pass
-
 
     def keyHold(self, keys):
         if 'w' in keys:

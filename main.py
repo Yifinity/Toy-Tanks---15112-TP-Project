@@ -38,7 +38,6 @@ def onMousePress(app, mouseX, mouseY):
 def onMouseMove(app, mouseX, mouseY):
     app.currentScene.mouseMove(mouseX, mouseY)
 
-
 def onKeyPress(app, key):
     app.currentScene.keyPress(key)
 

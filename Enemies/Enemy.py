@@ -30,8 +30,6 @@ class Enemy(Tank):
 
         self.differenceX = self.x - user.x
         self.differenceY = self.y - user.y
-
-
         turretRads = math.atan2(self.differenceY, self.differenceX)
 
         if self.notBlocked(user):
@@ -50,7 +48,6 @@ class Enemy(Tank):
 
                 self.count = 0
                 self.timeInSecs = 0
-
                 self.projectileManager.addMissile(
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))

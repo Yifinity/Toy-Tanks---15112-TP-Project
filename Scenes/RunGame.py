@@ -10,7 +10,6 @@ from ProjectileManager import *
 from Grid import *
 
 
-
 class RunGame:
     def __init__(self, app):
         self.highScore = 0

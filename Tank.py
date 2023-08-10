@@ -73,7 +73,6 @@ class Tank:
         # Starting points (in order): Highest, Rightmost, Bottommost, Rightmost 
         self.idxHighestLeading = [0, 1, 2, 3]
 
-
         # Turret:
         self.turretDegrees = 0
         self.tubeColor = self.color
@@ -98,12 +97,10 @@ class Tank:
     def __repr__(self):
         return 'Default Tank'
 
-
     def redraw(self, app):
         drawRect(self.x, self.y, self.width, self.height, border = self.border,
                 borderWidth = self.borderWidth, fill = self.color, 
                 align = 'center', rotateAngle = self.degrees)
-        
 
         drawRect(self.tubeX, self.tubeY, self.tubeLength, self.baseSize,
                  align = 'center', rotateAngle = self.turretDegrees,
@@ -128,10 +125,8 @@ class Tank:
     def keyHold(self, keys):
         pass
 
-
     # Helper functions that check projectile and grid collisions as well as 
     # Aid with movement
-     
     # Check to see if tank got hit by a projectile. 
     def checkHit(self, projectile):
         # Check highest point. 
@@ -230,7 +225,6 @@ class Tank:
                 if leaderLeftVal > contenderLeftVal:
                     highest = pointIdx
                     highestVal = self.hitPoints[pointIdx][1]
-        
         return highest
 
     # Check tanks' movement requests and update them if they are valid. 

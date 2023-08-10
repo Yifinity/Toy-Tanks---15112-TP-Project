@@ -26,7 +26,6 @@ class ProjectileManager:
         self.removedLocations = []
         self.sampleSize = 50
 
-
         # Music below from Video Game Music
         #https://downloads.khinsider.com/game-soundtracks/album/wii-play
         app.missionEnd = self.loadSound("Sounds\MissionEnd.mp3")
@@ -94,7 +93,6 @@ class ProjectileManager:
     def addNextTank(self, enemy):
         # Add a tuple of locations where the enemy was shot
         self.removedLocations.append((enemy.x, enemy.y))
-
         # Remove the enemy
         self.objects.remove(enemy)
 
@@ -103,15 +101,12 @@ class ProjectileManager:
 
         # Get a coodinate randomly from the removed location.         
         (cordX, cordY) = random.choice(self.removedLocations)        
-
-
         # Remove that location, as we are going to use it to spawn a tank. 
         self.removedLocations.remove((cordX, cordY))
-
         # should be 25 to around 125 - increase difficulty with higher score
         self.sampleSize =  app.userScore * 10
         selection = random.randint(0, self.sampleSize)
-
+        
         # Scores between 0-2
         if selection < 20:
             self.tankQueue.append(Enemy(cordX, cordY))

@@ -6,6 +6,5 @@ class YellowEnemy(Enemy):
 
         self.color = 'lemonChiffon'
         self.border = 'gold'
-
         # Fire frequency = seconds per shot. 
         self.fireFrequency = 2

@@ -17,8 +17,6 @@ class Projectile:
         # Zero points to left, so flip sign of dX and dY
         self.dX = -1.15 * (math.cos(self.cAngle))
         self.dY = -1.15 * (math.sin(self.cAngle))
-
-
         self.bounceAmount = 0
 
     def drawProjectile(self, app):
@@ -30,7 +28,6 @@ class Projectile:
         self.cX += self.dX
         self.cY += self.dY
 
- 
     def checkCollision(self, app):
         # Look three points ahead
         newX = self.cX + self.dX
