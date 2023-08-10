@@ -31,7 +31,7 @@ class ProjectileManager:
 
         # Check if the timer has fired the queue has tanks
         if (len(self.tankQueue) != 0 and (self.stepCount / 60 >= self.secCount 
-                                          or len(self.objects) < 4)):
+                                          or len(self.objects) < 5)):
             self.generateNextTank()
             self.stepCount = 0
 
@@ -76,9 +76,10 @@ class ProjectileManager:
 
         # Get a coodinate randomly from the removed location.         
         (cordX, cordY) = random.choice(self.removedLocations)        
-        self.removedLocations.remove((cordX, cordY))
 
-        if self.isTankThere(cordX, cordY): return 
+
+        # Remove that location, as we are going to use it to spawn a tank. 
+        self.removedLocations.remove((cordX, cordY))
 
         # should be 25 to around 125 - increase difficulty with higher score
         self.sampleSize =  app.userScore * 10
@@ -102,14 +103,32 @@ class ProjectileManager:
 
     # Remove the enemy and add a new one
     def generateNextTank(self):
-        self.objects.append(self.tankQueue[0])
-        self.tankQueue.pop(0)
+        print(self.tankQueue)
+        newIdx = 0
+        nextEnemy = self.tankQueue[newIdx]
+
+        # Check if our tank is there so we don't pop into their vicinity
+        if self.isTankThere(nextEnemy.x, nextEnemy.y):
+            if len(self.tankQueue) >= 2:
+                print('new idx')
+
+                # move the failed object to the end of the list
+                self.tankQueue.append(nextEnemy)
+                self.tankQueue.pop(0)
+
+            else:
+                print('no space!')
+                return 
+
+        # Run normally with the next tank at index 0
+        self.objects.append(self.tankQueue[newIdx])
+        self.tankQueue.pop(newIdx)
 
 
     # Check to see if there is a tank is within the vacinity of the coordinates
     def isTankThere(self, cordX, cordY):
-        for tank in self.objects:
-            if Tank.distance(cordX, cordY, tank.x, tank.y) <= 35:
+        distance = Tank.distance(app.user.x, app.user.y, cordX, cordY)
+        print(f'Distance: {distance}')
+        if distance <= 50:
                 return True
-                    
-        return True
+        return False
