@@ -10,8 +10,7 @@ Simply download the entire project and run the main.py file.
 **Libraries:**
 There should not be any libraries that require further installation.
 
-**
-Shortcut Commands:**
+**Shortcut Commands:**
 There are no shortcut commands used to speedforward in a game. 
 For the Intro and Instructions Scenes, you need to press Space in order to move on, as written in the directions there. 
 
