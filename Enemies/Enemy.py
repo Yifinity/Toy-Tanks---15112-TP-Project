@@ -1,7 +1,7 @@
 from Tank import *
 from math import *
 from Line import *
-
+import random
 class Enemy(Tank):
     def __init__(self, x, y):
         super().__init__(x, y)
@@ -16,10 +16,9 @@ class Enemy(Tank):
         self.turretDegrees = 0
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 4
+        self.fireFrequency = 2.5
         # self.anticipation = 2
         self.count = 0
-
 
     def onStep(self, app):
         self.targetUser()                          
@@ -55,6 +54,7 @@ class Enemy(Tank):
                 self.projectileManager.addMissile(
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))
+                app.enemyShot.play()
                 
             else: # update our time to fire. 
                 self.count += 1

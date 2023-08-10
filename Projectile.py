@@ -66,7 +66,6 @@ class Projectile:
         # Amount of times we need to get out of a grid 
         xCounter = self.countRevertTimes(0, testX, testY,  True)
         yCounter = self.countRevertTimes(0, testX, testY, False)
-        print(xCounter, yCounter)
 
         if xCounter > yCounter:
             # If removing the y led one to get out of the grid faster, 

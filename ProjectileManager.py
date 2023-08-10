@@ -27,11 +27,25 @@ class ProjectileManager:
         self.sampleSize = 50
 
 
-        # All music below from Video Game Music
+        # Music below from Video Game Music
         #https://downloads.khinsider.com/game-soundtracks/album/wii-play
         app.missionEnd = self.loadSound("Sounds\MissionEnd.mp3")
         app.runMission = self.loadSound("Sounds\GamePlay.mp3")
 
+        # Music From The Sounds Resource
+        # https://www.sounds-resource.com/wii/wiiplay/sound/28569/?source=genre
+        app.userShot = self.loadSound("Sounds\_UserShot.mp3")
+        app.enemyShot = self.loadSound("Sounds\_EnemyShot.mp3")
+
+    
+    # Copy and Pasted Professor Ray's Code for Method
+    def loadSound(self, relativePath):
+        # Convert to absolute path (because pathlib.Path only takes absolute paths)
+        absolutePath = os.path.abspath(relativePath)
+        # Get local file URL
+        url = pathlib.Path(absolutePath).as_uri()
+        # Load Sound file from local URL
+        return Sound(url)
 
     def addMissile(self, missile):
         self.projectiles.append(missile)
@@ -116,7 +130,6 @@ class ProjectileManager:
 
     # Remove the enemy and add a new one
     def generateNextTank(self):
-        print(self.tankQueue)
         newIdx = 0
         nextEnemy = self.tankQueue[newIdx]
 
@@ -139,17 +152,7 @@ class ProjectileManager:
     # Check to see if there is a tank is within the vacinity of the coordinates
     def isTankThere(self, cordX, cordY):
         distance = Tank.distance(app.user.x, app.user.y, cordX, cordY)
-        print(f'Distance: {distance}')
         if distance <= 50:
                 return True
         return False
     
-    
-    # Copy and Pasted Professor Ray's Code for Method
-    def loadSound(self, relativePath):
-        # Convert to absolute path (because pathlib.Path only takes absolute paths)
-        absolutePath = os.path.abspath(relativePath)
-        # Get local file URL
-        url = pathlib.Path(absolutePath).as_uri()
-        # Load Sound file from local URL
-        return Sound(url)
