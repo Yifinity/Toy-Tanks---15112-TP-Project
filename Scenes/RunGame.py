@@ -85,6 +85,8 @@ class RunGame:
         app.projectileManager.redraw(app)
         for object in app.objects:
             object.redraw(app)
+        
+        
 
         if app.gameOver:
             drawRect(app.width // 2, app.height // 2, 600, 250,
