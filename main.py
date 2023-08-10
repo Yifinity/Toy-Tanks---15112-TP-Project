@@ -22,6 +22,7 @@ def onAppStart(app):
     # Use 60 sets per second for easy conversion factor
     app.stepsPerSecond = 60
 
+    app.highScore = 0
     # Starting scene is our start up animation. 
     app.currentScene = app.runScenes[0]
 

@@ -13,6 +13,7 @@ from Grid import *
 
 class RunGame:
     def __init__(self, app):
+        self.highScore = 0
         self.restartApp(app)
 
         # label definitions
@@ -68,6 +69,9 @@ class RunGame:
         elif app.gameOver:
             # Copy and pasted from Instructions.py
             # Create a changing opacity animation
+            if app.userScore > app.highScore:
+                app.highScore = app.userScore
+
             if (self.readyOpacity >= 95 and self.dO > 0
                 or self.readyOpacity <= 5 and self.dO < 0):
                 self.dO *= -1
@@ -93,7 +97,7 @@ class RunGame:
             drawLabel("Score: " + str(app.userScore), app.width // 2, 
                       self.scoreY, size = 20, bold = True)
             
-            drawLabel("High Score: " + str(app.userScore), app.width // 2, 
+            drawLabel("High Score: " + str(app.highScore), app.width // 2, 
                       self.hiScoreY, size = 20, bold = True)
             
             # Copy and pasted from instructions.py
