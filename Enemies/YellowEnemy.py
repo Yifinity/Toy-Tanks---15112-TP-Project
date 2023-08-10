@@ -8,4 +8,4 @@ class YellowEnemy(Enemy):
         self.border = 'gold'
 
         # Fire frequency = seconds per shot. 
-        self.fireFrequency = 2.5
+        self.fireFrequency = 2

@@ -21,7 +21,7 @@ class RunGame:
         self.scoreY = self.gameOverY + 50
         self.hiScoreY = self.scoreY + 25
 
-        self.replayY = app.height // 2 + 100
+        self.replayY = app.height // 2 + 75
 
         self.pausedY = app.height // 2 - 15
         self.pressResumeY = self.pausedY + 50
@@ -62,6 +62,8 @@ class RunGame:
 
     def onStep(self):
         if not app.gameOver and not app.paused:
+            # Audio functionatly from Ray's python file
+            app.runMission.play(loop = True)
             app.projectileManager.onStep(app)
             for object in app.objects:
                 object.onStep(app)
