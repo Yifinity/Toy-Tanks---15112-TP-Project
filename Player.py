@@ -88,6 +88,8 @@ class Player(Tank):
                 Projectile(projectileX, projectileY, 
                             math.radians(self.turretDegrees)))
             
+            app.userShot.play()
+
 
             self.availableProjectiles -= 1
             self.stepCounts = 0  
