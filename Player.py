@@ -99,12 +99,12 @@ class Player(Tank):
         newX, newY, newDegrees = self.x, self.y, self.degrees
         # if-elif pairs ensures no control conflicts
         if 'w' in keys:
-            newX += 2 * math.cos(math.radians(self.degrees))
-            newY += 2 * math.sin(math.radians(self.degrees))
+            newX += 2.5 * math.cos(math.radians(self.degrees))
+            newY += 2.5 * math.sin(math.radians(self.degrees))
             
         elif 's' in keys: 
-            newX -= 2 * math.cos(math.radians(self.degrees))
-            newY -= 2 * math.sin(math.radians(self.degrees))
+            newX -= 2.5 * math.cos(math.radians(self.degrees))
+            newY -= 2.5 * math.sin(math.radians(self.degrees))
 
         if 'a' in keys: 
             newDegrees -= self.dAngle
