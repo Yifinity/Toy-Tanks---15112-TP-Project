@@ -86,6 +86,10 @@ class Introduction:
                 app.currentScene = app.runScenes[2]
     
     def keyPress(self, key):
+        if key == 'r':
+            app.currentScene = app.runScenes[0]
+            app.currentScene.reset()
+
         if key == 'space':
             # First make sure the label's opactity is 0
             self.startOpacity = 0

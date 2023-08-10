@@ -3,6 +3,9 @@ from PIL import Image
 
 class Startup:
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.isOver = False
         self.counter = 0
         self.targetTime = 5
