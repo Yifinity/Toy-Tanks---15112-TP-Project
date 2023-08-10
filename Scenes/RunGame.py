@@ -21,7 +21,7 @@ class RunGame:
         self.scoreY = self.gameOverY + 50
         self.hiScoreY = self.scoreY + 25
 
-        self.replayY = app.height // 2 + 100
+        self.replayY = app.height // 2 + 50
 
         self.pausedY = app.height // 2 - 15
         self.pressResumeY = self.pausedY + 50
@@ -87,7 +87,7 @@ class RunGame:
             object.redraw(app)
 
         if app.gameOver:
-            drawRect(app.width // 2, app.height // 2, 600, 300,
+            drawRect(app.width // 2, app.height // 2, 600, 250,
                      fill = 'maroon', border = 'darkBlue', borderWidth = 10,
                      align = 'center')
             
