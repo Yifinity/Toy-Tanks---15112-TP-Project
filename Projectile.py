@@ -40,11 +40,7 @@ class Projectile:
              and self.grid.checkPoint(newX, newY)):
             return True
         
-        else: # New position doesn't work. 
-            print((0 <= newX < self.grid.gWidth) and (0 <= newY < self.grid.gHeight), end = ' and ')
-            print(self.grid.checkPoint(newX, newY), end = ' bounce ')
-            print (self.bounceAmount)
-            
+        else: # New position doesn't work.             
             if self.bounceAmount < 1: 
                 # First check if we're out of bounds
                 if (not 0 <= self.cX < self.grid.gWidth): 

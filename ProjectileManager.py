@@ -10,7 +10,6 @@ from Tank import distance
 import random
 
 # Copy and pasted from Professor Ray's SoundTest.py
-# Requires os, pathlib
 import os, pathlib
 
 class ProjectileManager:
@@ -27,18 +26,11 @@ class ProjectileManager:
         self.removedLocations = []
         self.sampleSize = 50
 
-        self.missionEnd = self.loadSound("Sounds\MissionEnd.mp3")
 
-
-    # Copy and Pasted Professor Ray's Code for Method
-    def loadSound(self, relativePath):
-        # Convert to absolute path (because pathlib.Path only takes absolute paths)
-        absolutePath = os.path.abspath(relativePath)
-        # Get local file URL
-        url = pathlib.Path(absolutePath).as_uri()
-        # Load Sound file from local URL
-        return Sound(url)
-
+        # All music below from Video Game Music
+        #https://downloads.khinsider.com/game-soundtracks/album/wii-play
+        app.missionEnd = self.loadSound("Sounds\MissionEnd.mp3")
+        app.runMission = self.loadSound("Sounds\GamePlay.mp3")
 
 
     def addMissile(self, missile):
@@ -64,8 +56,10 @@ class ProjectileManager:
                     
                     else:
                         if object == app.user:
-                            self.missionEnd.play()
                             app.gameOver = True
+
+                            app.runMission.pause()
+                            app.missionEnd.play()
                         else:
                             app.userScore += 1
                             self.addNextTank(object)
@@ -149,3 +143,13 @@ class ProjectileManager:
         if distance <= 50:
                 return True
         return False
+    
+    
+    # Copy and Pasted Professor Ray's Code for Method
+    def loadSound(self, relativePath):
+        # Convert to absolute path (because pathlib.Path only takes absolute paths)
+        absolutePath = os.path.abspath(relativePath)
+        # Get local file URL
+        url = pathlib.Path(absolutePath).as_uri()
+        # Load Sound file from local URL
+        return Sound(url)
