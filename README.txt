@@ -11,8 +11,8 @@ Libraries:
 There should not be any libraries that require further installation.
 
 Shortcut Commands:
-There are no shortcut commands used to speedforward in a game. 
-For the Intro and Instructions Scenes, you need to press Space in order to move on, as written in the directions there. 
+There are no shortcut commands used to speedforward in the game. 
+For the Intro and Instructions Scenes, you need to press Space in order to move on, as written in the directions. 
 
 
 Term Project for Summer 2023 15-112 at Carnegie Mellon University
