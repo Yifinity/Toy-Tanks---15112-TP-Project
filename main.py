@@ -5,10 +5,10 @@
 * Date: 10 August 2023
 '''
 
-from Scenes.Startup import *
-from Scenes.Introduction import *
-from Scenes.Instructions import *
-from Scenes.RunGame import *
+from Data.Scenes.Startup import *
+from Data.Scenes.Introduction import *
+from Data.Scenes.Instructions import *
+from Data.Scenes.RunGame import *
 
 def onAppStart(app): 
     app.runningAnimation = True
