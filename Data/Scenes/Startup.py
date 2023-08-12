@@ -45,7 +45,7 @@ class Startup:
                 # When it's over, move to the next scene
                 app.currentScene = app.runScenes[1]
 
-    def sousePress(app, mouseX, mouseY):
+    def mousePress(app, mouseX, mouseY):
         pass
 
     def mouseMove(app, mouseX, mouseY):
