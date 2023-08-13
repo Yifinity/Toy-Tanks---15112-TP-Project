@@ -26,14 +26,6 @@ class ProjectileManager:
         self.removedLocations = []
         self.sampleSize = 50
     
-    # Copy and Pasted Professor Ray's Code for Method
-    def loadSound(self, relativePath):
-        # Convert to absolute path (because pathlib.Path only takes absolute paths)
-        absolutePath = os.path.abspath(relativePath)
-        # Get local file URL
-        url = pathlib.Path(absolutePath).as_uri()
-        # Load Sound file from local URL
-        return Sound(url)
 
     def addMissile(self, missile):
         self.projectiles.append(missile)
