@@ -140,6 +140,6 @@ class RunGame:
 
         # We want these functionality to only be sent when we're playing
         if key == 'p':
-            app.paused = not app.d
+            app.paused = not app.paused
 
 
