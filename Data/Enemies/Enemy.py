@@ -51,7 +51,6 @@ class Enemy(Tank):
                 self.projectileManager.addMissile(
                     Projectile(projectileX, projectileY, 
                                 math.radians(self.turretDegrees)))
-                app.enemyShot.play()
                 
             else: # update our time to fire. 
                 self.count += 1

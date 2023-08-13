@@ -25,17 +25,6 @@ class ProjectileManager:
         self.tankQueue = []
         self.removedLocations = []
         self.sampleSize = 50
-
-        # Music below from Video Game Music
-        #https://downloads.khinsider.com/game-soundtracks/album/wii-play
-        app.missionEnd = self.loadSound("Data\Sounds\MissionEnd.mp3")
-        app.runMission = self.loadSound("Data\Sounds\GamePlay.mp3")
-
-        # Music From The Sounds Resource
-        # https://www.sounds-resource.com/wii/wiiplay/sound/28569/?source=genre
-        app.userShot = self.loadSound("Data\Sounds\_UserShot.mp3")
-        app.enemyShot = self.loadSound("Data\Sounds\_EnemyShot.mp3")
-
     
     # Copy and Pasted Professor Ray's Code for Method
     def loadSound(self, relativePath):
@@ -71,8 +60,6 @@ class ProjectileManager:
                         if object == app.user:
                             app.gameOver = True
 
-                            app.runMission.pause()
-                            app.missionEnd.play()
                         else:
                             app.userScore += 1
                             self.addNextTank(object)

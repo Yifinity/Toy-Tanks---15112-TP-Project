@@ -62,7 +62,6 @@ class RunGame:
     def onStep(self):
         if not app.gameOver and not app.paused:
             # Audio functionatly from Ray's python file
-            app.runMission.play(loop = True)
             app.projectileManager.onStep(app)
             for object in app.objects:
                 object.onStep(app)
@@ -141,6 +140,6 @@ class RunGame:
 
         # We want these functionality to only be sent when we're playing
         if key == 'p':
-            app.paused = not app.paused
+            app.paused = not app.d
 
 
